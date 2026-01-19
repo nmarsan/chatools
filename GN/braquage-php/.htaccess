@@ -1,0 +1,20 @@
+RewriteEngine On
+RewriteBase /
+
+# Redirect all requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Security: Deny access to sensitive files
+<FilesMatch "\.(php|json)$">
+    <If "%{REQUEST_URI} =~ m#/data/sessions/#">
+        Require all denied
+    </If>
+</FilesMatch>
+
+# Allow access to assets
+<DirectoryMatch "^.*/assets/">
+    Require all granted
+</DirectoryMatch>
+
