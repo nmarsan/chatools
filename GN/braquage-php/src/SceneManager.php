@@ -15,6 +15,11 @@ class SceneManager {
     public function getScene(string $sceneId): ?array {
         foreach ($this->scenes as $scene) {
             if ($scene['id'] === $sceneId) {
+                // Ensure backward compatibility: if 'contents' exists but not 'character_contents', convert it
+                if (isset($scene['contents']) && !isset($scene['character_contents'])) {
+                    $scene['character_contents'] = $scene['contents'];
+                    unset($scene['contents']);
+                }
                 return $scene;
             }
         }

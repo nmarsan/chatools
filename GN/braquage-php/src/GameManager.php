@@ -135,6 +135,8 @@ class GameManager {
             if ($visitedScene && isset($visitedScene['choices'])) {
                 foreach ($visitedScene['choices'] as $choice) {
                     if (isset($choice['target_scene_id']) && $choice['target_scene_id'] === $sceneId) {
+                        // If choice has a condition, check if it's met (for now, we allow all conditions)
+                        // TODO: Implement condition checking based on session state
                         return true;
                     }
                 }

@@ -36,54 +36,74 @@
                         <div class="scene-id">ID: <?= htmlspecialchars($currentScene['id']) ?></div>
                     </div>
 
-                    <!-- Character Tabs -->
-                    <?php if (!empty($currentScene['contents'])): ?>
-                        <div class="character-tabs">
-                            <?php 
-                            $characters = ['Alex', 'Charlie', 'Camille', 'Andréa'];
-                            $sceneCharacters = array_unique(array_column($currentScene['contents'], 'character'));
-                            ?>
-                            <?php foreach ($characters as $char): ?>
-                                <?php if (in_array($char, $sceneCharacters)): ?>
-                                    <button class="tab-btn <?= $char === $sceneCharacters[0] ? 'active' : '' ?>" data-character="<?= htmlspecialchars($char) ?>">
-                                        <?= htmlspecialchars($char) ?>
-                                    </button>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
+                    <!-- Orga Text (Main Content) -->
+                    <?php if (!empty($currentScene['orga_text'])): ?>
+                        <div class="orga-content">
+                            <h3>Instructions Orga</h3>
+                            <div class="orga-text">
+                                <?= nl2br(htmlspecialchars($currentScene['orga_text'])) ?>
+                            </div>
                         </div>
+                    <?php endif; ?>
 
-                        <!-- Character Content -->
-                        <div class="character-content">
-                            <?php foreach ($currentScene['contents'] as $index => $content): ?>
-                                <div class="character-panel <?= $index === 0 ? 'active' : '' ?>" data-character="<?= htmlspecialchars($content['character']) ?>">
-                                    <?php if (!empty($content['introduction'])): ?>
-                                        <div class="introduction">
-                                            <h3>Introduction</h3>
-                                            <p><?= nl2br(htmlspecialchars($content['introduction'])) ?></p>
-                                        </div>
+                    <!-- Character Tabs -->
+                    <?php if (!empty($currentScene['character_contents'])): ?>
+                        <div class="character-section">
+                            <h3>Livrets des personnages</h3>
+                            <div class="character-tabs">
+                                <?php 
+                                $characters = ['Alex', 'Charlie', 'Camille', 'Andréa'];
+                                $sceneCharacters = array_unique(array_column($currentScene['character_contents'], 'character'));
+                                ?>
+                                <?php foreach ($characters as $char): ?>
+                                    <?php if (in_array($char, $sceneCharacters)): ?>
+                                        <button class="tab-btn <?= $char === $sceneCharacters[0] ? 'active' : '' ?>" data-character="<?= htmlspecialchars($char) ?>">
+                                            <?= htmlspecialchars($char) ?>
+                                        </button>
                                     <?php endif; ?>
-                                    <?php if (!empty($content['information'])): ?>
-                                        <div class="information">
-                                            <h3>Information</h3>
-                                            <p><?= nl2br(htmlspecialchars($content['information'])) ?></p>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <!-- Character Content -->
+                            <div class="character-content">
+                                <?php foreach ($currentScene['character_contents'] as $index => $content): ?>
+                                    <div class="character-panel <?= $index === 0 ? 'active' : '' ?>" data-character="<?= htmlspecialchars($content['character']) ?>">
+                                        <?php if (!empty($content['introduction'])): ?>
+                                            <div class="introduction">
+                                                <h4>Introduction</h4>
+                                                <p><?= nl2br(htmlspecialchars($content['introduction'])) ?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if (!empty($content['information'])): ?>
+                                            <div class="information">
+                                                <h4>Information</h4>
+                                                <p><?= nl2br(htmlspecialchars($content['information'])) ?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
-                    <?php else: ?>
-                        <div class="no-content">Cette scène n'a pas de contenu.</div>
                     <?php endif; ?>
 
                     <!-- Choices -->
                     <?php if (!empty($currentScene['choices'])): ?>
                         <div class="choices-panel">
-                            <h3>Choix possibles</h3>
+                            <h3>Navigation vers les scènes suivantes</h3>
                             <div class="choices-list">
                                 <?php foreach ($currentScene['choices'] as $choice): ?>
-                                    <button class="choice-btn" data-choice-id="<?= htmlspecialchars($choice['id']) ?>" data-target-scene="<?= htmlspecialchars($choice['target_scene_id']) ?>">
-                                        <?= htmlspecialchars($choice['description']) ?>
-                                    </button>
+                                    <?php if (empty($choice['condition'])): ?>
+                                        <button class="choice-btn" data-choice-id="<?= htmlspecialchars($choice['id']) ?>" data-target-scene="<?= htmlspecialchars($choice['target_scene_id']) ?>">
+                                            <?= htmlspecialchars($choice['description']) ?>
+                                        </button>
+                                    <?php else: ?>
+                                        <div class="choice-conditional">
+                                            <button class="choice-btn" data-choice-id="<?= htmlspecialchars($choice['id']) ?>" data-target-scene="<?= htmlspecialchars($choice['target_scene_id']) ?>" data-condition="<?= htmlspecialchars($choice['condition']) ?>">
+                                                <?= htmlspecialchars($choice['description']) ?>
+                                            </button>
+                                            <span class="choice-condition">(Condition: <?= htmlspecialchars($choice['condition']) ?>)</span>
+                                        </div>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </div>
                         </div>
