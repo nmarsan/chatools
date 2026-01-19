@@ -6,12 +6,6 @@ services:
     container_name: braquage-game-manager
     ports:
       - "3001:3000"
-    volumes:
-      # Mount the project directory directly to /app to avoid duplication
-      - .:/app
-      # Use container's node_modules and .next (anonymous volumes)
-      - /app/node_modules
-      - /app/.next
     working_dir: /app
     environment:
       - NODE_ENV=production
