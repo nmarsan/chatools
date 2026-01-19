@@ -4,6 +4,10 @@ const path = require('path');
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
+  // Include data directory in output tracing
+  outputFileTracingIncludes: {
+    '/*': ['./data/**/*'],
+  },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     
