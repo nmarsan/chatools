@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder  # Build only the builder stage for debugging
     container_name: braquage-game-manager
     ports:
       - "3001:3000"

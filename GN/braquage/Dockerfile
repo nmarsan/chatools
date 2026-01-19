@@ -12,9 +12,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Verify files are present before build
-RUN ls -la app/scenes.ts && echo "File exists" || echo "File NOT FOUND"
-RUN cat app/scenes.ts | head -5
+# Verify structure and files
+RUN echo "=== Structure ===" && ls -la && echo "=== app/ ===" && ls -la app/ && echo "=== app/scenes.ts ===" && ls -la app/scenes.ts 2>&1 || echo "scenes.ts NOT FOUND in app/"
 
 # Build the application (continue even on error for debugging)
 RUN npm run build || true
