@@ -6,7 +6,11 @@ $scenesData = [
         'id' => '1-1',
         'acte' => 1,
         'scene' => 1,
-        'orga_text' => 'Texte principal du livret Orga pour la scène 1-1. Ce texte décrit la situation générale et les instructions pour l\'organisation.',
+        'orga_text' => 'INSTRUCTION ORGA SCÈNE 1-1
+
+[À remplir avec le texte du livret Orga pour la scène 1]
+
+Les 4 personnages (Alex, Charlie, Camille, Andréa) sont présents. Chaque personnage a son propre livret avec le texte de cette scène.',
         'character_contents' => [
             [
                 'character' => 'Alex',
@@ -14,10 +18,23 @@ $scenesData = [
 
 L\'accès à la plage est difficile, et Alex est surexcité d\'y être. Il a trouvé LE caillou idéal. Et puis il y a un rocher en hauteur d\'où ils pourraient sauter dans l\'eau...',
             ],
+            // TODO: Ajouter Charlie, Camille, Andréa pour cette scène
+            // [
+            //     'character' => 'Charlie',
+            //     'introduction' => '...',
+            // ],
+            // [
+            //     'character' => 'Camille',
+            //     'introduction' => '...',
+            // ],
+            // [
+            //     'character' => 'Andréa',
+            //     'introduction' => '...',
+            // ],
         ],
         'choices' => [
             ['id' => '1-1-1-3', 'description' => 'Continuer vers la scène suivante', 'target_scene_id' => '1-3'],
-            // Exemple de choix conditionnel :
+            // Exemple de choix conditionnel (à remplir selon le livret Orga) :
             // ['id' => '1-1-1-5', 'description' => 'Si condition A : passez à la scène 5', 'target_scene_id' => '1-5', 'condition' => 'condition_a'],
             // ['id' => '1-1-1-6', 'description' => 'Si condition B : passez à la scène 6', 'target_scene_id' => '1-6', 'condition' => 'condition_b'],
         ],

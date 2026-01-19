@@ -46,28 +46,35 @@
                         </div>
                     <?php endif; ?>
 
-                    <!-- Character Tabs -->
-                    <?php if (!empty($currentScene['character_contents'])): ?>
-                        <div class="character-section">
-                            <h3>Livrets des personnages</h3>
-                            <div class="character-tabs">
-                                <?php 
-                                $characters = ['Alex', 'Charlie', 'Camille', 'Andréa'];
-                                $sceneCharacters = array_unique(array_column($currentScene['character_contents'], 'character'));
-                                ?>
-                                <?php foreach ($characters as $char): ?>
-                                    <?php if (in_array($char, $sceneCharacters)): ?>
-                                        <button class="tab-btn <?= $char === $sceneCharacters[0] ? 'active' : '' ?>" data-character="<?= htmlspecialchars($char) ?>">
-                                            <?= htmlspecialchars($char) ?>
-                                        </button>
+                    <!-- Character Tabs - Always show 4 tabs -->
+                    <div class="character-section">
+                        <h3>Livrets des personnages</h3>
+                        <div class="character-tabs">
+                            <?php 
+                            $characters = ['Alex', 'Charlie', 'Camille', 'Andréa'];
+                            $characterContents = [];
+                            if (!empty($currentScene['character_contents'])) {
+                                foreach ($currentScene['character_contents'] as $content) {
+                                    $characterContents[$content['character']] = $content;
+                                }
+                            }
+                            ?>
+                            <?php foreach ($characters as $index => $char): ?>
+                                <button class="tab-btn <?= $index === 0 ? 'active' : '' ?> <?= !isset($characterContents[$char]) ? 'empty' : '' ?>" data-character="<?= htmlspecialchars($char) ?>">
+                                    <?= htmlspecialchars($char) ?>
+                                    <?php if (!isset($characterContents[$char])): ?>
+                                        <span class="tab-empty-indicator">(vide)</span>
                                     <?php endif; ?>
-                                <?php endforeach; ?>
-                            </div>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
 
-                            <!-- Character Content -->
-                            <div class="character-content">
-                                <?php foreach ($currentScene['character_contents'] as $index => $content): ?>
-                                    <div class="character-panel <?= $index === 0 ? 'active' : '' ?>" data-character="<?= htmlspecialchars($content['character']) ?>">
+                        <!-- Character Content -->
+                        <div class="character-content">
+                            <?php foreach ($characters as $index => $char): ?>
+                                <div class="character-panel <?= $index === 0 ? 'active' : '' ?>" data-character="<?= htmlspecialchars($char) ?>">
+                                    <?php if (isset($characterContents[$char])): ?>
+                                        <?php $content = $characterContents[$char]; ?>
                                         <?php if (!empty($content['introduction'])): ?>
                                             <div class="introduction">
                                                 <h4>Introduction</h4>
@@ -80,13 +87,17 @@
                                                 <p><?= nl2br(htmlspecialchars($content['information'])) ?></p>
                                             </div>
                                         <?php endif; ?>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
+                                    <?php else: ?>
+                                        <div class="no-character-content">
+                                            <p>Ce personnage n'intervient pas dans cette scène.</p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
 
-                    <!-- Choices -->
+                    <!-- Choices - Displayed in Orga section -->
                     <?php if (!empty($currentScene['choices'])): ?>
                         <div class="choices-panel">
                             <h3>Navigation vers les scènes suivantes</h3>
@@ -101,14 +112,11 @@
                                             <button class="choice-btn" data-choice-id="<?= htmlspecialchars($choice['id']) ?>" data-target-scene="<?= htmlspecialchars($choice['target_scene_id']) ?>" data-condition="<?= htmlspecialchars($choice['condition']) ?>">
                                                 <?= htmlspecialchars($choice['description']) ?>
                                             </button>
-                                            <span class="choice-condition">(Condition: <?= htmlspecialchars($choice['condition']) ?>)</span>
                                         </div>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                    <?php else: ?>
-                        <div class="no-choices">Aucun choix disponible pour cette scène.</div>
                     <?php endif; ?>
 
                     <!-- Navigation -->
