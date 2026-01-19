@@ -6,6 +6,13 @@ services:
     container_name: braquage-game-manager
     ports:
       - "3001:3000"
+    volumes:
+      # Mount project directory to /data
+      - .:/data
+      # Use container's node_modules and .next (anonymous volumes)
+      - /data/node_modules
+      - /data/.next
+    working_dir: /data
     environment:
       - NODE_ENV=production
     restart: unless-stopped

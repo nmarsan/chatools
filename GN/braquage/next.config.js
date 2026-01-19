@@ -7,7 +7,7 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     
-    // Explicitly resolve @ alias to project root
+    // Explicitly resolve @ alias to project root (/data in container)
     config.resolve.alias['@'] = path.resolve(__dirname);
     
     // Ensure TypeScript files are resolved with proper extensions
