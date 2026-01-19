@@ -18,6 +18,6 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# Keep container running and allow manual build
+# Keep container running for manual debugging
 CMD ["tail", "-f", "/dev/null"]
 
