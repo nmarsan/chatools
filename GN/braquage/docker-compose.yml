@@ -3,12 +3,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: builder  # Build only the builder stage for debugging
     container_name: braquage-game-manager
     ports:
       - "3001:3000"
     environment:
       - NODE_ENV=production
     restart: unless-stopped
+    # Keep container running for debugging
+    command: tail -f /dev/null
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 30s

@@ -16,8 +16,11 @@ COPY . .
 RUN ls -la app/scenes.ts && echo "File exists" || echo "File NOT FOUND"
 RUN cat app/scenes.ts | head -5
 
-# Build the application
-RUN npm run build
+# Build the application (continue even on error for debugging)
+RUN npm run build || true
+
+# Keep container running for debugging
+CMD ["tail", "-f", "/dev/null"]
 
 # Production stage
 FROM node:20-alpine AS runner
