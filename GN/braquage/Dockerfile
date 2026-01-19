@@ -12,9 +12,6 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Verify files are copied (for debugging)
-RUN ls -la data/ || echo "data directory not found"
-
 # Build the application
 RUN npm run build
 
