@@ -1,56 +1,24 @@
-# Build stage
-FROM node:20-alpine AS builder
+# Development/Build stage - files will be mounted as volume
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
+# Install dependencies (will be overridden by volume mount, but needed for build)
 COPY package.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy source code
-COPY . .
-
-# Verify structure and files
-RUN echo "=== Structure ===" && ls -la && echo "=== app/ ===" && ls -la app/ && echo "=== app/scenes.ts ===" && ls -la app/scenes.ts 2>&1 || echo "scenes.ts NOT FOUND in app/"
-
-# Build the application (continue even on error for debugging)
-RUN npm run build || true
-
-# Keep container running for debugging
-CMD ["tail", "-f", "/dev/null"]
-
-# Production stage
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-ENV NODE_ENV production
+# The source code will be mounted as a volume in docker-compose
+# So we just need to set up the environment
 
 # Install wget for healthcheck
 RUN apk add --no-cache wget
-
-# Create a non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy built application from builder
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-# Copy data directory for scenes
-COPY --from=builder --chown=nextjs:nodejs /app/data ./data
-
-# Create directory for game data (external volume will be mounted here)
-RUN mkdir -p /app/data/game-sessions && chown -R nextjs:nodejs /app/data
-
-USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-CMD ["node", "server.js"]
+# For development: run dev server
+# For production: run build then start
+CMD ["sh", "-c", "npm run build && npm start"]
 
