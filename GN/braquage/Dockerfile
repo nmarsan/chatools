@@ -12,6 +12,9 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Verify files are copied (for debugging)
+RUN ls -la data/ || echo "data directory not found"
+
 # Build the application
 RUN npm run build
 
@@ -33,6 +36,8 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copy data directory for scenes
+COPY --from=builder --chown=nextjs:nodejs /app/data ./data
 
 # Create directory for game data (external volume will be mounted here)
 RUN mkdir -p /app/data/game-sessions && chown -R nextjs:nodejs /app/data
