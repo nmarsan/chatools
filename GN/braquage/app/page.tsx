@@ -8,7 +8,7 @@ import SceneTree from '@/components/SceneTree';
 import SessionManager from '@/components/SessionManager';
 import { usePersistedStore } from '@/hooks/usePersistedStore';
 import InfoBanner from '@/components/InfoBanner';
-import { scenesData } from './scenes';
+import { scenesData } from './scenes.js';
 import { ArrowLeft } from 'lucide-react';
 
 export default function Home() {

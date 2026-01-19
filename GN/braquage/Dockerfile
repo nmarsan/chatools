@@ -18,7 +18,6 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# For development: run dev server
-# For production: run build then start
-CMD ["sh", "-c", "npm run build && npm start"]
+# Keep container running and allow manual build
+CMD ["tail", "-f", "/dev/null"]
 
