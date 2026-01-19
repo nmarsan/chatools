@@ -12,6 +12,10 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Verify files are present before build
+RUN ls -la app/scenes.ts && echo "File exists" || echo "File NOT FOUND"
+RUN cat app/scenes.ts | head -5
+
 # Build the application
 RUN npm run build
 

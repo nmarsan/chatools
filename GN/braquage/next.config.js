@@ -10,6 +10,16 @@ const nextConfig = {
     // Explicitly resolve @ alias to project root
     config.resolve.alias['@'] = path.resolve(__dirname);
     
+    // Ensure TypeScript files are resolved
+    config.resolve.extensions = [
+      '.tsx',
+      '.ts',
+      '.jsx',
+      '.js',
+      '.json',
+      ...config.resolve.extensions,
+    ];
+    
     return config;
   },
 }
