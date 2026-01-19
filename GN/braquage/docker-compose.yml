@@ -9,8 +9,6 @@ services:
     environment:
       - NODE_ENV=production
     restart: unless-stopped
-    # Start in root directory instead of /app
-    command: bash -c "cd / && tail -f /dev/null"
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 30s
