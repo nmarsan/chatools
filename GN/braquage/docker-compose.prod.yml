@@ -9,7 +9,7 @@ services:
     volumes:
       # Mount external directory for game sessions data
       # Change this path to your desired location
-      - /path/to/game-sessions:/app/data/game-sessions
+      - /data/www/chatools/GN/braquage/game-sessions:/app/data/game-sessions
     environment:
       - NODE_ENV=production
     restart: unless-stopped
