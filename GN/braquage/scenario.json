@@ -1080,7 +1080,7 @@
         "musique": "The Angry River",
         "infos": "Le père coupe les vivres.",
         "choix": [
-            { "texte": "Suite (Vers Camille 39 ou 40)", "cible": "39", "condition": "camille_accepte_coup", "set": {} },
+            { "texte": "Suite (Vers Camille 39)", "cible": "39", "condition": "camille_accepte_coup", "set": {} },
             { "texte": "Suite (Vers Camille 40)", "cible": "40", "set": {} }
         ],
         "joueurs": {
