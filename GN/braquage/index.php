@@ -1,5 +1,5 @@
 <?php
-// --- 1. CONFIGURATION ET CHARGEMENT inéfificace---
+// --- 1. CONFIGURATION ET CHARGEMENT test jenkins ---
 $state_file = 'gamestate.json';
 
 // Initialisation si fichier absent
