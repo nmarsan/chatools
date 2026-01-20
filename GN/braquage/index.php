@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 // --- 1. CONFIGURATION ET CHARGEMENT ---
 $state_file = 'gamestate.json';
 
@@ -18,7 +16,7 @@ $scenarios = json_decode($json_data, true);
 $view = $_GET['view'] ?? 'orga';
 $is_orga = ($view === 'orga');
 
-// --- 2. FONCTION D'EXPORT PDF (GÉNÉRATION DE LA PAGE D'IMPRESSION) ---
+// --- 2. FONCTION D'EXPORT PDF ---
 if (isset($_GET['export']) && $is_orga) {
     ?>
     <!DOCTYPE html>
@@ -86,10 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_orga) {
         $prev_id = $state['scene'];
         $prev_title = $scenarios[$prev_id]['titre'] ?? 'Scène '.$prev_id;
         
-        // Ajout historique
         $state['history'][] = ['id' => $prev_id, 'titre' => $prev_title, 'action' => $action_text];
         
-        // Ajout flags
         if (isset($_POST['set_flags'])) {
             $new_flags = json_decode(htmlspecialchars_decode($_POST['set_flags']), true);
             if (is_array($new_flags)) { $state['flags'] = array_merge($state['flags'], $new_flags); }
@@ -122,7 +118,7 @@ $current_id = $state['scene'];
 $scene = $scenarios[$current_id] ?? null;
 if (!$scene) die("Erreur scène $current_id. <a href='?action=reset'>Reset</a>");
 
-// Couleurs Acteurs
+// Config Joueurs
 $config = [
     'orga'    => ['name' => 'ORGA (NATH)', 'bg' => '#2c3e50', 'color' => '#fff'],
     'alex'    => ['name' => 'ALEX',       'bg' => '#f1c40f', 'color' => '#000'],
@@ -132,12 +128,10 @@ $config = [
 ];
 $current_theme = $config[$view];
 
-// Données spécifiques joueur
 $p_info = $scene['joueurs'][$view] ?? [];
 $role_txt = $p_info['role'] ?? $config[$view]['name'];
 $cons_txt = $p_info['consignes'] ?? "Pas d'instructions pour cette scène.";
 
-// Acte
 $act_lbl = "ACTE INDÉFINI"; $act_col = "#777";
 if ($current_id <= 28) { $act_lbl = "ACTE 1"; $act_col = "#3498db"; } 
 elseif ($current_id >= 29 && $current_id <= 67) { $act_lbl = "ACTE 2.1"; $act_col = "#e67e22"; } 
@@ -153,24 +147,21 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
     <style>
         body { background: #1a1a1a; color: #eee; font-family: sans-serif; margin: 0; padding-top: 60px; }
         
-        /* Navigation Onglets */
         .tabs { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: #000; display: flex; z-index: 1000; border-bottom: 2px solid #444; }
         .tab { flex: 1; text-align: center; line-height: 50px; color: #777; text-decoration: none; font-weight: bold; font-size: 0.9em; transition:0.2s; }
         .tab:hover { background: #222; color: #fff; }
         .tab.active { background: <?php echo $current_theme['bg']; ?>; color: <?php echo $current_theme['color']; ?>; border-bottom: 4px solid #fff; }
 
-        /* Layout */
         .wrapper { display: flex; max-width: 1600px; margin: 20px auto; gap: 20px; padding: 0 10px; align-items: flex-start; }
         .main-col { flex: 3; background: #2b2b2b; padding: 30px; border-radius: 8px; border-top: 5px solid <?php echo $current_theme['bg']; ?>; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .side-col { flex: 1; background: #222; padding: 20px; border-radius: 8px; border-left: 1px solid #444; position: sticky; top: 80px; max-height: 85vh; overflow-y: auto; min-width: 280px; }
 
-        /* Contenu */
         .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; background: <?php echo $act_col; ?>; font-weight: bold; font-size: 0.8em; }
         h1 { margin: 10px 0; font-size: 1.8em; }
+        
         .box { background: #333; padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 4px solid #555; }
         .box-title { display: block; color: #aaa; font-size: 0.75em; text-transform: uppercase; font-weight: bold; margin-bottom: 5px; }
         
-        /* Joueurs */
         .role-display { text-align: center; padding: 20px; background: <?php echo $current_theme['bg']; ?>; color: <?php echo $current_theme['color']; ?>; font-size: 1.3em; font-weight: bold; border-radius: 8px; margin-bottom: 20px; }
         
         /* Contrôles Orga */
@@ -178,11 +169,9 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         .btn-mini { padding:8px 12px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
         .btn-export { background: #3498db; color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; }
         
-        /* Boutons Choix */
         .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #c0392b; color: white; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s; }
         .btn-choice:hover { background: #e74c3c; padding-left: 20px; }
 
-        /* Historique */
         .hist-item { font-size: 0.85em; border-bottom: 1px solid #333; padding: 8px 0; color: #aaa; }
         .hist-act { color: #3498db; font-style: italic; margin-top:3px; }
     </style>
@@ -201,10 +190,8 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         <h1>Scène <?php echo $current_id; ?> : <?php echo $scene['titre']; ?></h1>
         
         <?php if (!$is_orga): ?>
-            <?php $is_secondary = (strpos($role_txt, $config[$view]['name']) === false); ?>
-            <div class="role-display" style="<?php if($is_secondary) echo 'border:4px solid #fff;'; ?>">
+            <div class="role-display">
                 <?php echo $role_txt; ?>
-                <?php if($is_secondary) echo '<div style="font-size:0.6em; margin-top:5px;">(RÔLE SECONDAIRE)</div>'; ?>
             </div>
             <div class="box" style="border-left-color: #f1c40f;"><span class="box-title">TES INSTRUCTIONS</span><?php echo nl2br($cons_txt); ?></div>
             <div class="box"><span class="box-title">CONTEXTE</span><em style="color:#ccc;"><?php echo nl2br($scene['intro']); ?></em></div>
@@ -217,27 +204,53 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                         <?php foreach($scenarios as $id=>$s) echo "<option value='$id'>$id. {$s['titre']}</option>"; ?>
                     </select>
                 </form>
-                
                 <form method="POST"><input type="hidden" name="action" value="back"><button class="btn-mini" style="background:#555; color:#fff;" title="Retour Arrière">⬅</button></form>
-                
                 <a href="?view=orga&export=1" target="_blank" class="btn-export" title="Générer PDF">📄 PDF</a>
-                
                 <form method="POST"><input type="hidden" name="action" value="reset"><button class="btn-mini" style="background:#444; color:#e74c3c;" onclick="return confirm('Tout effacer ?');">⚠️ Reset</button></form>
             </div>
 
-            <div class="box"><span class="box-title">👥 Personnages</span><?php echo $scene['personnages'] ?? '-'; ?></div>
-            <div class="box"><span class="box-title">📖 Intro (Lire à haute voix)</span><?php echo nl2br($scene['intro']); ?></div>
+            <?php if(!empty($scene['musique'])): ?>
+                <div class="box" style="border-left-color:#9b59b6;">
+                    <span class="box-title">🎵 Musique</span>
+                    <strong style="color:#e0b0ff;"><?php echo $scene['musique']; ?></strong>
+                </div>
+            <?php endif; ?>
+
+            <div class="box">
+                <span class="box-title">👥 Personnages Présents</span>
+                <?php echo $scene['personnages'] ?? '-'; ?>
+            </div>
+
+            <div class="box">
+                <span class="box-title">📖 Introduction</span>
+                <?php echo nl2br($scene['intro']); ?>
+            </div>
+
             <?php if(!empty($scene['mise_en_scene'])): ?>
-                <div class="box"><span class="box-title">🎬 Mise en Scène</span><?php echo nl2br($scene['mise_en_scene']); ?></div>
+                <div class="box">
+                    <span class="box-title">🎬 Mise en Scène</span>
+                    <?php echo nl2br($scene['mise_en_scene']); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if(!empty($scene['infos'])): ?>
+                <div class="box" style="border-left-color:#e67e22; background:#3e332a;">
+                    <span class="box-title">ℹ️ Informations Orga</span>
+                    <div style="color:#f39c12; font-weight:500;"><?php echo nl2br($scene['infos']); ?></div>
+                </div>
             <?php endif; ?>
 
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin:20px 0;">
                 <?php foreach($config as $k=>$v): if($k=='orga') continue; 
                     $p = $scene['joueurs'][$k] ?? []; $r = $p['role'] ?? '-';
-                    $alert = (strpos($r, $v['name']) === false && $r !== '-') ? 'border:1px solid red; background:#300;' : 'background:#333;';
+                    $is_secondary = (strpos($r, $v['name']) === false && $r !== '-');
+                    $style_box = $is_secondary ? 'border:1px solid #e74c3c; background:rgba(231, 76, 60, 0.2);' : 'background:#333; border:1px solid #444;';
+                    $name_color = $v['bg']; 
                 ?>
-                    <div style="padding:8px; font-size:0.85em; border-radius:4px; <?php echo $alert; ?>">
-                        <strong style="color:<?php echo $v['color']; ?>"><?php echo $v['name']; ?></strong> : <?php echo $r; ?>
+                    <div style="padding:10px; font-size:0.9em; border-radius:4px; <?php echo $style_box; ?>">
+                        <strong style="color:<?php echo $name_color; ?>; text-transform:uppercase;"><?php echo $v['name']; ?></strong>
+                        <span style="color:#aaa;"> joue </span>
+                        <span style="color:#fff; font-weight:bold;"><?php echo $r; ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
