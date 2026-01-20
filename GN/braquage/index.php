@@ -1,5 +1,5 @@
 <?php
-// --- 1. CONFIGURATION ET CHARGEMENT ---
+// --- 1. CONFIGURATION ET CHARGEMENT inéfificace---
 $state_file = 'gamestate.json';
 
 // Initialisation si fichier absent
