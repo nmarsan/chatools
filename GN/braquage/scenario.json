@@ -4,13 +4,17 @@
         "act": "1",
         "personnages": "Alex, Andréa, Camille, Charlie",
         "accessoires": "",
-        "lieu": "",
+        "lieu": "Plage",
         "intro": "Cette histoire débute en 1992, sur le chemin menant aux calanques de Marseille. 4 enfants d'un peu plus de 12 ans se dirigent vers une plage peu fréquentée avec une seule idée en tête : faire des ricochets et peut‐être profiter de la fraîcheur de l'eau en ce mois de mai…",
         "mise_en_scene": "La scène se déroule en trois parties. Arrivée des quatre enfants à la plage (après une bonne marche), jet de cailloux, à celui qui fera le plus de ricochets et enfin baignade pour les plus téméraires. La scène prend fin quand un enfant décide de partir ou quelques minutes après la baignade.",
         "musique": "Going Out ‐ Joe Hisaichi",
         "infos": "Cette scène aide à mettre en place une relation entre les enfants. Elle sera la seule, avec la scène 3, à donner une image de leur enfance. Elle peut éventuellement être jouée en dehors du jeu, en atelier.",
         "choix": [
-            { "texte": "Suite", "cible": "2", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "2",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -35,14 +39,18 @@
         "titre": "Braquage ‐ Partie 1",
         "act": "1",
         "personnages": "Andréa, Alex, Charlie, Camille",
-        "accessoires": "",
-        "lieu": "",
+        "accessoires": "Flingue",
+        "lieu": "SALON FINAL, canapé TV, porte",
         "intro": "Octobre 2007, dans le petit appartement d'Andréa, dans une banlieue de Marseille. Alex et Andréa boivent tranquillement une bière, comme tous les jeudis soirs, comme un rituel instauré depuis quelques années maintenant.\nAssis tranquillement dans le canapé, devant un de ces films de série Z dont raffole Andréa, les deux amis discutent tranquillement. Lorsque la porte s'ouvre avec fracas, laissant Charlie dans l'entrebâillement, une arme en main.",
         "mise_en_scene": "Deux chaises pour simuler le canapé. Alex et Andréa sur les chaises, un verre en main. Ils discutent un peu avant l'entrée de Charlie. Camille arrive plus tard. Si possible juste après le tir de Charlie. Mais si elle ne tire pas, après quelques minutes. La scène prend fin rapidement après l'arrivée de Camille. L'idéal est de commencé la scène quelques secondes avant l'entrée de Charlie.",
         "musique": "Where is my mind ‐ Pixies",
         "infos": "Cette scène est la scène principale, celle vers laquelle toutes les décisions prises vont mener. Mais selon ces choix, les protagonistes ne seront pas au même endroit, de plus, ils n'auront pas les mêmes informations.",
         "choix": [
-            { "texte": "Suite", "cible": "3", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "3",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -68,14 +76,26 @@
         "act": "1",
         "personnages": "Andréa, Alex, Charlie et Camille",
         "accessoires": "",
-        "lieu": "",
+        "lieu": "Toit de maison, piscine en contrebas",
         "intro": "Eté 1993, dans la demeure familiale d'Alex. Il a invité ses amis à profiter de la piscine, comme pratiquement tous les jours de l'été. Personne n'est présent, aussi est venu le temps des défis, et celui là est simple : sauter du toit de la maison dans la piscine",
         "mise_en_scene": "Une table pour simuler le toit de la maison avec une chaise pour l'échelle Alex et Andréa sur la table. Charlie et Camille allongées au sol. La scène prend fin au moment ou Andréa saute ou descend du toit. La scène s'arrête d'un coup au moment où la musique démarre.",
         "musique": "Up the spout ‐ Mateo Messina",
         "infos": "Cette scène se termine d'un coup au démarrage de la musique",
         "choix": [
-            { "texte": "Andréa ne saute pas", "cible": "4", "set": {"andrea_saute": false} },
-            { "texte": "Andréa saute", "cible": "6", "set": {"andrea_saute": true} }
+            {
+                "texte": "Andréa ne saute pas",
+                "cible": "4",
+                "set": {
+                    "andrea_saute": false
+                }
+            },
+            {
+                "texte": "Andréa saute",
+                "cible": "6",
+                "set": {
+                    "andrea_saute": true
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -100,14 +120,18 @@
         "titre": "Une passion commune",
         "act": "1",
         "personnages": "Charlie, l'oncle (ou la tante) de Charlie (Alex), Camille",
-        "accessoires": "",
-        "lieu": "",
+        "accessoires": "Outils de mécanique",
+        "lieu": "Garage Peugeot de L'oncle de Charlie - table pour passer sous la voiture",
         "intro": "Septembre 1993, dans un garage Peugeot. Charlie aime la mécanique et ces moments qu'elle passe avec son oncle les mains dans le cambouis. Camille est arrivée avec ses parents, un problème mécanique sur la voiture familiale. C'est le moment pour Camille d'apprendre avec Charlie et son oncle quelques rudiments de mécanique.",
         "mise_en_scene": "Charlie et son oncle sont sous une table représentant une voiture. Camille arrive quelques minutes après et s'intéresse à ce qu'il se passe. Charlie lui montre, appuyée par son oncle, quelques rudiments de mécanique",
         "musique": "Aretha Franklin ‐ Respect",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "5", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "5",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -139,7 +163,11 @@
         "musique": "Somewhere I Belong ‐ Linkin Park",
         "infos": "Vérifier les possibles restrictions au niveau des contacts physiques",
         "choix": [
-            { "texte": "Suite", "cible": "8", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "8",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -171,7 +199,11 @@
         "musique": "Aretha Franklin ‐ Respect",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "7", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "7",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -203,7 +235,11 @@
         "musique": "Yodelice ‐ Emergency",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "8", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "8",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -235,7 +271,11 @@
         "musique": "Sia ‐ Elastic Heart",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "9", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "9",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -267,7 +307,11 @@
         "musique": "Familiar Fire ‐ Yodelice",
         "infos": "Vérifier les possibles restrictions au niveau des contacts physiques (gifle). La musique est la même pour les scènes qui suivent…",
         "choix": [
-            { "texte": "Suite", "cible": "10", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "10",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -299,8 +343,20 @@
         "musique": "Familiar Fire ‐ Yodelice",
         "infos": "",
         "choix": [
-            { "texte": "Si Alex accepte Charlie", "cible": "11", "set": {"charlie_chez_alex": true} },
-            { "texte": "Si Alex n'accepte pas Charlie", "cible": "12", "set": {"charlie_chez_alex": false} }
+            {
+                "texte": "Si Alex accepte Charlie",
+                "cible": "11",
+                "set": {
+                    "charlie_chez_alex": true
+                }
+            },
+            {
+                "texte": "Si Alex n'accepte pas Charlie",
+                "cible": "12",
+                "set": {
+                    "charlie_chez_alex": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -332,7 +388,11 @@
         "musique": "Everybody's Talkin ‐ Harry Nilsson",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "13", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "13",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -364,8 +424,20 @@
         "musique": "Familiar Fire ‐ Yodelice",
         "infos": "",
         "choix": [
-            { "texte": "Si Andréa accepte Charlie", "cible": "13", "set": {"charlie_chez_andrea": true} },
-            { "texte": "Sinon", "cible": "14", "set": {"charlie_chez_andrea": false} }
+            {
+                "texte": "Si Andréa accepte Charlie",
+                "cible": "13",
+                "set": {
+                    "charlie_chez_andrea": true
+                }
+            },
+            {
+                "texte": "Sinon",
+                "cible": "14",
+                "set": {
+                    "charlie_chez_andrea": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -397,7 +469,11 @@
         "musique": "Raindrops Keep Falling On My Head ‐ B.J. Thomas",
         "infos": "Cette scène est là pour montrer la relation entre Camille et ses frères.",
         "choix": [
-            { "texte": "Suite", "cible": "16", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "16",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -429,8 +505,16 @@
         "musique": "Familiar Fire ‐ Yodelice",
         "infos": "",
         "choix": [
-            { "texte": "Si Camille accepte d'accueillir Charlie", "cible": "16", "set": {} },
-            { "texte": "Sinon", "cible": "15", "set": {} }
+            {
+                "texte": "Si Camille accepte d'accueillir Charlie",
+                "cible": "16",
+                "set": {}
+            },
+            {
+                "texte": "Sinon",
+                "cible": "15",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -462,10 +546,31 @@
         "musique": "Stolen Dance ‐ Milky Chance",
         "infos": "Cette scène est cruciale car elle va orienter tout le reste du jeu.",
         "choix": [
-            { "texte": "Camille et Charlie se font embarquer (avec ou sans Alex)", "cible": "17", "set": {"camille_prison": true, "charlie_prison": true} },
-            { "texte": "Aucune ou une seule se fait embarquer avec Alex", "cible": "18", "set": {} },
-            { "texte": "Une seule se fait embarquer, sans Alex", "cible": "19", "set": {} },
-            { "texte": "Personne ne se fait embarquer", "cible": "21", "set": {"aucune_prison": true} }
+            {
+                "texte": "Camille et Charlie se font embarquer (avec ou sans Alex)",
+                "cible": "17",
+                "set": {
+                    "camille_prison": true,
+                    "charlie_prison": true
+                }
+            },
+            {
+                "texte": "Aucune ou une seule se fait embarquer avec Alex",
+                "cible": "18",
+                "set": {}
+            },
+            {
+                "texte": "Une seule se fait embarquer, sans Alex",
+                "cible": "19",
+                "set": {}
+            },
+            {
+                "texte": "Personne ne se fait embarquer",
+                "cible": "21",
+                "set": {
+                    "aucune_prison": true
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -497,10 +602,31 @@
         "musique": "Stolen Dance ‐ Milky Chance",
         "infos": "Cette scène est cruciale car elle va orienter tout le reste du jeu.",
         "choix": [
-            { "texte": "Camille et Charlie se font embarquer (avec ou sans Alex)", "cible": "17", "set": {"camille_prison": true, "charlie_prison": true} },
-            { "texte": "Aucune ou une seule se fait embarquer avec Alex", "cible": "18", "set": {} },
-            { "texte": "Une seule se fait embarquer, sans Alex", "cible": "19", "set": {} },
-            { "texte": "Personne ne se fait embarquer", "cible": "22", "set": {"aucune_prison": true} }
+            {
+                "texte": "Camille et Charlie se font embarquer (avec ou sans Alex)",
+                "cible": "17",
+                "set": {
+                    "camille_prison": true,
+                    "charlie_prison": true
+                }
+            },
+            {
+                "texte": "Aucune ou une seule se fait embarquer avec Alex",
+                "cible": "18",
+                "set": {}
+            },
+            {
+                "texte": "Une seule se fait embarquer, sans Alex",
+                "cible": "19",
+                "set": {}
+            },
+            {
+                "texte": "Personne ne se fait embarquer",
+                "cible": "22",
+                "set": {
+                    "aucune_prison": true
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -532,8 +658,20 @@
         "musique": "Nevermind ‐ Leonard Cohen",
         "infos": "",
         "choix": [
-            { "texte": "Alex s'est rendu", "cible": "18", "set": {"alex_rendu": true} },
-            { "texte": "Alex ne s'est pas rendu", "cible": "19", "set": {"alex_rendu": false} }
+            {
+                "texte": "Alex s'est rendu",
+                "cible": "18",
+                "set": {
+                    "alex_rendu": true
+                }
+            },
+            {
+                "texte": "Alex ne s'est pas rendu",
+                "cible": "19",
+                "set": {
+                    "alex_rendu": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -565,9 +703,29 @@
         "musique": "Sirens Call ‐ Cats on tree",
         "infos": "",
         "choix": [
-            { "texte": "C'est Camille qui est jugée responsable", "cible": "20", "set": {"camille_prison": true, "charlie_prison": false} },
-            { "texte": "Aucune ne s'est fait prendre", "cible": "22", "set": {"aucune_prison": true} },
-            { "texte": "C'est Charlie qui est jugée responsable", "cible": "21", "set": {"charlie_prison": true, "camille_prison": false} }
+            {
+                "texte": "C'est Camille qui est jugée responsable",
+                "cible": "20",
+                "set": {
+                    "camille_prison": true,
+                    "charlie_prison": false
+                }
+            },
+            {
+                "texte": "Aucune ne s'est fait prendre",
+                "cible": "22",
+                "set": {
+                    "aucune_prison": true
+                }
+            },
+            {
+                "texte": "C'est Charlie qui est jugée responsable",
+                "cible": "21",
+                "set": {
+                    "charlie_prison": true,
+                    "camille_prison": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -599,8 +757,22 @@
         "musique": "Sirens Call ‐ Cats on tree",
         "infos": "",
         "choix": [
-            { "texte": "C'est Camille qui est jugée responsable", "cible": "20", "set": {"camille_prison": true, "charlie_prison": false} },
-            { "texte": "C'est Charlie qui est jugée responsable", "cible": "21", "set": {"charlie_prison": true, "camille_prison": false} }
+            {
+                "texte": "C'est Camille qui est jugée responsable",
+                "cible": "20",
+                "set": {
+                    "camille_prison": true,
+                    "charlie_prison": false
+                }
+            },
+            {
+                "texte": "C'est Charlie qui est jugée responsable",
+                "cible": "21",
+                "set": {
+                    "charlie_prison": true,
+                    "camille_prison": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -632,7 +804,11 @@
         "musique": "Glory and Gore ‐ Lorde",
         "infos": "Vérifier les possibles restrictions au niveau des contacts physiques",
         "choix": [
-            { "texte": "Suite", "cible": "23", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "23",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -664,7 +840,11 @@
         "musique": "Glory and Gore ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "23", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "23",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -696,7 +876,11 @@
         "musique": "Glory and Gore ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "23", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "23",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -728,8 +912,18 @@
         "musique": "Stay ‐ Pink",
         "infos": "La mère d'Andréa est en fauteuil roulant",
         "choix": [
-            { "texte": "Camille est allée en prison", "cible": "24", "condition": "camille_prison", "set": {} },
-            { "texte": "Charlie est allée en prison", "cible": "26", "condition": "charlie_prison", "set": {} }
+            {
+                "texte": "Camille est allée en prison",
+                "cible": "24",
+                "condition": "camille_prison",
+                "set": {}
+            },
+            {
+                "texte": "Charlie est allée en prison",
+                "cible": "26",
+                "condition": "charlie_prison",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -761,7 +955,11 @@
         "musique": "Things we lost in the fire ‐ Bastille",
         "infos": "Si Camille refuse l'offre, rejouer la scène en décembre, en mettant Camille dans une situation bien pire que précédemment. Le froid est là, et elle n'a vraiment plus un sous.",
         "choix": [
-            { "texte": "Suite", "cible": "25", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "25",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -793,7 +991,11 @@
         "musique": "A well respected man ‐ The Kinks",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "28", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "28",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -825,7 +1027,11 @@
         "musique": "What Now ‐ Rihanna",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "27", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "27",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -857,7 +1063,11 @@
         "musique": "A well respected man ‐ The Kinks",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "28", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "28",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -889,8 +1099,18 @@
         "musique": "Take me to church ‐ Hozier",
         "infos": "",
         "choix": [
-            { "texte": "Si c'est Camille qui est allée en prison", "cible": "29", "condition": "camille_prison", "set": {} },
-            { "texte": "Si c'est Charlie qui est allée en prison", "cible": "68", "condition": "charlie_prison", "set": {} }
+            {
+                "texte": "Si c'est Camille qui est allée en prison",
+                "cible": "29",
+                "condition": "camille_prison",
+                "set": {}
+            },
+            {
+                "texte": "Si c'est Charlie qui est allée en prison",
+                "cible": "68",
+                "condition": "charlie_prison",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -911,7 +1131,7 @@
             }
         }
     },
-"29": {
+    "29": {
         "titre": "Règlement de compte ‐ Partie 2",
         "act": "2.1",
         "personnages": "Andréa, Alex, Charlie, Camille",
@@ -921,23 +1141,29 @@
         "mise_en_scene": "Deux chaises pour simuler le canapé. Alex et Andréa sur les chaises, un verre en main. Ils discutent un peu avant l'entrée de Camille. Charlie arrive plus tard. Si possible juste après le tir de Camille. Mais si elle ne tire pas, après quelques minutes. La scène prend fin rapidement après l'arrivée de Charlie. L'idéal est de commencé la scène quelques secondes avant l'entrée de Camille.",
         "musique": "Where is my mind ‐ Pixies",
         "infos": "Les joueurs ne doivent pas reproduire à l'identique ce qu'il s'est passé dans la première version. Ils peuvent se servir de ce qu'il s'est passé dans l'acte 1.",
-        "choix": [ { "texte": "Suite", "cible": "30", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "30",
+                "set": {}
+            }
+        ],
         "joueurs": {
-            "alex": { 
-                "role": "Alex (27 ans)", 
-                "consignes": "INTRODUCTION\nAlex a 27 ans et a vécu sa vie à fond. Etre un enfant de riche, c'est toujours plus facile pour vivre sans penser au lendemain. Surtout quand ce statut vous protège même de la justice, même si finalement, cela ne fait pas tout, loin s'en faut.\nMais aujourd'hui, sa vie va prendre fin.\nCamille, son amie d'enfance, va bientôt entrer dans le petit appartement d'Andréa et lui braquer une arme sur le front, prête à tirer. Alex Mérite‐t‐il de mourir de sa main ? Oui, peut‐être. Alex est certainement responsable de nombre des malheurs qui sont tombés sur le petit groupe d'amis depuis qu'ils sont gamins. Mais merde, il aime vivre ! Quand à Charlie, elle arrivera sans doute trop tard pour stopper Camille dans son élan. Et ce n'est pas Andréa qui se mettra en travers de son chemin.\nPour l'instant, Alex est assis à côté d'Andréa devant un film de série Z que son ami adore.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nPrenez note que se faire pointer une arme sur la tête fait peur." 
+            "alex": {
+                "role": "Alex (27 ans)",
+                "consignes": "INTRODUCTION\nAlex a 27 ans et a vécu sa vie à fond. Etre un enfant de riche, c'est toujours plus facile pour vivre sans penser au lendemain. Surtout quand ce statut vous protège même de la justice, même si finalement, cela ne fait pas tout, loin s'en faut.\nMais aujourd'hui, sa vie va prendre fin.\nCamille, son amie d'enfance, va bientôt entrer dans le petit appartement d'Andréa et lui braquer une arme sur le front, prête à tirer. Alex Mérite‐t‐il de mourir de sa main ? Oui, peut‐être. Alex est certainement responsable de nombre des malheurs qui sont tombés sur le petit groupe d'amis depuis qu'ils sont gamins. Mais merde, il aime vivre ! Quand à Charlie, elle arrivera sans doute trop tard pour stopper Camille dans son élan. Et ce n'est pas Andréa qui se mettra en travers de son chemin.\nPour l'instant, Alex est assis à côté d'Andréa devant un film de série Z que son ami adore.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nPrenez note que se faire pointer une arme sur la tête fait peur."
             },
-            "andrea": { 
-                "role": "Andréa (27 ans)", 
-                "consignes": "INTRODUCTION\nAndréa a 27 ans, et est toujours aussi peu sûr de lui. Pourtant, dans son travail, dans l'administration, il est comme un poisson dans l'eau. Suivre des procédures, c'est parfait et personne ne lui demande de prendre des initiatives.\nMais aujourd'hui, il va être confronté à la situation la plus stressante de sa vie. Son ami Alex va se faire tuer par son autre amie Camille. Il va sans doute finir à genou de l'autre côté de la pièce, implorant du bout des lèvres à Camille de ne pas tirer sur la détente. Charlie saurait quoi faire elle.\nMais pour l'instant, il est tranquillement dans le canapé avec Alex, une bière à la main, devant un film de série Z dont il raffole tant.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nPrenez note qu'une arme à feu fait peur." 
+            "andrea": {
+                "role": "Andréa (27 ans)",
+                "consignes": "INTRODUCTION\nAndréa a 27 ans, et est toujours aussi peu sûr de lui. Pourtant, dans son travail, dans l'administration, il est comme un poisson dans l'eau. Suivre des procédures, c'est parfait et personne ne lui demande de prendre des initiatives.\nMais aujourd'hui, il va être confronté à la situation la plus stressante de sa vie. Son ami Alex va se faire tuer par son autre amie Camille. Il va sans doute finir à genou de l'autre côté de la pièce, implorant du bout des lèvres à Camille de ne pas tirer sur la détente. Charlie saurait quoi faire elle.\nMais pour l'instant, il est tranquillement dans le canapé avec Alex, une bière à la main, devant un film de série Z dont il raffole tant.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nPrenez note qu'une arme à feu fait peur."
             },
-            "camille": { 
-                "role": "Camille (28 ans)", 
-                "consignes": "INTRODUCTION\nCamille a 28 ans et sa vie est foutue. C'est en tout cas l'image qu'elle en a. Si elle est responsable de ce gâchis, un autre a participé à la destruction de son existence, et aujourd'hui il va devoir payer.\nC'est donc armée, avec l'intention de tuer Alex, qu'elle se rend chez Andréa, où ils ont l'habitude de se retrouver les jeudis soirs.\nAlex, qui a toujours défié tout le monde et s'en est toujours sorti sans la moindre égratignure. Lui qui n'a jamais pris conscience des conséquences de ses actes, alors que Camille a toujours essayé de réparer ses conneries. Mais elle n'en peut plus désormais, et il va enfin être mis face à ses responsabilités…\nQuand Camille sera face à Alex avec son arme, elle tirera, c'est certain. Mais est‐ce que ce sera après lui avoir dit ses 4 vérités, ou sans un mot, seule Camille le sait. Andréa, sera sans doute recroquevillé dans un coin. Quant à Charlie, elle ne sera pas là pour l'arrêter, et pourtant, elle serait peut‐être la seule personne que Camille pourrait écouter…\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère beaucoup de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1. Vous êtes désormais à la place de Charlie, quand elle est à votre place.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène. Entrez quand l'orga vous donne le signal.\nNotez que vous êtes libre de tirer ou pas, n'oubliez pas toutefois que l'histoire est un drame." 
+            "camille": {
+                "role": "Camille (28 ans)",
+                "consignes": "INTRODUCTION\nCamille a 28 ans et sa vie est foutue. C'est en tout cas l'image qu'elle en a. Si elle est responsable de ce gâchis, un autre a participé à la destruction de son existence, et aujourd'hui il va devoir payer.\nC'est donc armée, avec l'intention de tuer Alex, qu'elle se rend chez Andréa, où ils ont l'habitude de se retrouver les jeudis soirs.\nAlex, qui a toujours défié tout le monde et s'en est toujours sorti sans la moindre égratignure. Lui qui n'a jamais pris conscience des conséquences de ses actes, alors que Camille a toujours essayé de réparer ses conneries. Mais elle n'en peut plus désormais, et il va enfin être mis face à ses responsabilités…\nQuand Camille sera face à Alex avec son arme, elle tirera, c'est certain. Mais est‐ce que ce sera après lui avoir dit ses 4 vérités, ou sans un mot, seule Camille le sait. Andréa, sera sans doute recroquevillé dans un coin. Quant à Charlie, elle ne sera pas là pour l'arrêter, et pourtant, elle serait peut‐être la seule personne que Camille pourrait écouter…\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère beaucoup de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1. Vous êtes désormais à la place de Charlie, quand elle est à votre place.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène. Entrez quand l'orga vous donne le signal.\nNotez que vous êtes libre de tirer ou pas, n'oubliez pas toutefois que l'histoire est un drame."
             },
-            "charlie": { 
-                "role": "Charlie (27 ans)", 
-                "consignes": "INTRODUCTION\nCharlie a 27 ans et grâce au centre, elle s'est construit une vie. Qui aurait pu croire qu'une fille comme elle puisse devenir flic, et une bonne en plus.\nElle a même réussi à pardonner à son oncle. Bien sûr, il a fallu qu'il meurt, mais quelle importance aujourd'hui ? Lui pardonner à lui, c'est aussi se pardonner à elle et reconnaître qu'elle n'était pas responsable.\nQuand sa radio crache une adresse, une violente dispute, elle sait que c'est chez Andréa que cela se passe. Aussi elle prendra soin d'intervenir sans son arme de service, et en tant qu'amie et non flic.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère beaucoup de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1. Vous êtes désormais à la place de Camille, quand elle est à votre place.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nEntrez quand l'orga vous donne le signal." 
+            "charlie": {
+                "role": "Charlie (27 ans)",
+                "consignes": "INTRODUCTION\nCharlie a 27 ans et grâce au centre, elle s'est construit une vie. Qui aurait pu croire qu'une fille comme elle puisse devenir flic, et une bonne en plus.\nElle a même réussi à pardonner à son oncle. Bien sûr, il a fallu qu'il meurt, mais quelle importance aujourd'hui ? Lui pardonner à lui, c'est aussi se pardonner à elle et reconnaître qu'elle n'était pas responsable.\nQuand sa radio crache une adresse, une violente dispute, elle sait que c'est chez Andréa que cela se passe. Aussi elle prendra soin d'intervenir sans son arme de service, et en tant qu'amie et non flic.\n\nINFORMATION\nIl s'agit de la scène de \"Braquage\". Comme vous pouvez le voir elle diffère beaucoup de la première scène. C'est normal, cela dépend des choix faits dans l'acte 1. Vous êtes désormais à la place de Camille, quand elle est à votre place.\nServez vous de ce que vous avez déjà vécu, mais vous pouvez aussi ajouter des détails, comme pour la première scène.\nEntrez quand l'orga vous donne le signal."
             }
         }
     },
@@ -951,7 +1177,13 @@
         "mise_en_scene": "Les 4 amis sont assis autour d'une table dans un bar, après l'enterrement. Il y a de la musique en fond sonore. Dès que la musique \"Paint it Black\" passe, le ton entre les amis montent.",
         "musique": "For What It's Worth ‐ Buffalo Springfield ; Paint it black ‐ Rolling Stones ; Turn! Turn! Turn! ‐ The Byrds ; You'll Know You Were Loved ‐ Lou Reed.",
         "infos": "Comme il y a une bande sonore sur cette scène, la scène prend fin à la fin de la musique, et non au début comme pour les autres scènes.",
-        "choix": [ { "texte": "Suite", "cible": "31", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "31",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (23 ans)",
@@ -981,7 +1213,13 @@
         "mise_en_scene": "Alex est allongé, il se réveille à peine. Noa est debout, prête à faire ses annonces. Au bout d'un certain temps, Ange débarque, mettant fin à la scène.",
         "musique": "Radioactive ‐ Imagine Dragons",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "32", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "32",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (23 ans)",
@@ -1011,7 +1249,13 @@
         "mise_en_scene": "Il ya 2 tables séparées avec deux chaises. Les deux chaises de la table 1 sont orientées vers la table 2 tandis qu'une des chaises de la table 2 tourne le dos à la table 1, tandis que l'autre chaise (où sera assise Sacha) est face à la table 1. Dans un premier temps, Charlie et Andréa boivent un verre à la table 1. Sacha vient s'assoir à la table 2. Dans un second temps Charlie se lève et se dirige vers Sacha tandis que Domi fait son entrée et va s'assoir avec Andréa. La scène prend fin quand Domi a donné sa carte de visite à Andrea.",
         "musique": "Call me maybe ‐ Carly Rae Jepsen",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "33", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "33",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Domi",
@@ -1041,7 +1285,13 @@
         "mise_en_scene": "Une table avec deux chaises. Andréa arrive avec une bouteille de vin.",
         "musique": "Wherever you are ‐ Celeste Prince",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "34", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "34",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1071,7 +1321,13 @@
         "mise_en_scene": "Deux chaises accolées, comme une salle d'attente. Le jeune frère est sur une chaise et attend. Camille arrive. Puis, peu de temps après, Alex sort des toilettes. Finalement Charlie entre comme flic, elle doit faire signer des papiers. En tant qu'orga, vous pouvez intervenir en tans que Capitaine de la police, annonçant qu'Alex peut sortir mais que le jeune garçon est convoqué au tribunal.",
         "musique": "How I roll ‐ Charlie Mars",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "35", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "35",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (23 ans)",
@@ -1101,7 +1357,13 @@
         "mise_en_scene": "Charlie est assise à une table avec une chaise, deux feuilles et un stylo. La mère de Charlie, est en coulisse et improvise la lettre reçue par Charlie. Lettre qui attend une réponse. Il est possible, tout de suite après, de faire la rencontre entre Charlie et sa mère.",
         "musique": "United State of Eurasia ‐ Muse",
         "infos": "La mère peut totalement inventer sa vie",
-        "choix": [ { "texte": "Suite", "cible": "36", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "36",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1131,7 +1393,13 @@
         "mise_en_scene": "Camille attend Domi à une table. Elle annonce qu'elle veut arrêter et Domi s'énerve avant de lui proposer son marché.",
         "musique": "Bulletproof Cupid ‐ Placebo",
         "infos": "Ici, Domi va très lourdement insister pour que Camille fasse le coup, quit à menacer Ange.",
-        "choix": [ { "texte": "Suite", "cible": "37", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "37",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Domi",
@@ -1161,7 +1429,13 @@
         "mise_en_scene": "Charlie lui parle de son oncle et de sa mère. Elle demande également à Sacha d'être exclusive.",
         "musique": "Love the way you lie ‐ Rihanna feat Eminem",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "38", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "38",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1192,8 +1466,20 @@
         "musique": "The Angry River ‐ S.I. Itswa & Father John",
         "infos": "",
         "choix": [
-            { "texte": "Si Camille a accepté le dernier coup scène précédente", "cible": "39", "set": {"camille_accepte_coup": true} },
-            { "texte": "Si Camille n'a pas accepté le dernier coup scène précédente", "cible": "40", "set": {"camille_accepte_coup": false} }
+            {
+                "texte": "Si Camille a accepté le dernier coup scène précédente",
+                "cible": "39",
+                "set": {
+                    "camille_accepte_coup": true
+                }
+            },
+            {
+                "texte": "Si Camille n'a pas accepté le dernier coup scène précédente",
+                "cible": "40",
+                "set": {
+                    "camille_accepte_coup": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1224,7 +1510,13 @@
         "mise_en_scene": "La camionnette est symboliser par deux chaises. Camille attend assise dans le camion quand Andréa entre en scène quelques secondes après. La scène prend fin quand Camille décide de partir, avec ou sans Andréa.",
         "musique": "Uprising ‐ Muse",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "41", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "41",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1254,7 +1546,13 @@
         "mise_en_scene": "La camionnette est symboliser par deux chaises. Camille attend assise dans le camion quand Andréa entre en scène quelques secondes après. La scène prend fin quand Camille décide de partir, avec ou sans Andréa.",
         "musique": "Uprising ‐ Muse",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "41", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "41",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1285,9 +1583,29 @@
         "musique": "Trouble ‐ Coldplay",
         "infos": "",
         "choix": [
-            { "texte": "Charlie choisit sa carrière et Andréa a suivi Camille", "cible": "42", "set": {"charlie_carriere": true, "andrea_suit_camille": true} },
-            { "texte": "Charlie choisit sa carrière et Andréa n'a pas suivi Camille", "cible": "43", "set": {"charlie_carriere": true, "andrea_suit_camille": false} },
-            { "texte": "Charlie choisit ses amis", "cible": "44", "set": {"charlie_carriere": false} }
+            {
+                "texte": "Charlie choisit sa carrière et Andréa a suivi Camille",
+                "cible": "42",
+                "set": {
+                    "charlie_carriere": true,
+                    "andrea_suit_camille": true
+                }
+            },
+            {
+                "texte": "Charlie choisit sa carrière et Andréa n'a pas suivi Camille",
+                "cible": "43",
+                "set": {
+                    "charlie_carriere": true,
+                    "andrea_suit_camille": false
+                }
+            },
+            {
+                "texte": "Charlie choisit ses amis",
+                "cible": "44",
+                "set": {
+                    "charlie_carriere": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1318,7 +1636,13 @@
         "mise_en_scene": "Andréa entre en courant, et Charlie le tient en joue, mais il est dans son dos. Andréa se retourne doucement et remarque Charlie.",
         "musique": "Lust for Life ‐ Iggy Pop",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "43", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "43",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1349,8 +1673,17 @@
         "musique": "Royals ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Andréa a fini en prison", "cible": "46", "condition": "andrea_prison", "set": {} },
-            { "texte": "Andréa n'a pas fini en prison", "cible": "45", "set": {} }
+            {
+                "texte": "Andréa a fini en prison",
+                "cible": "46",
+                "condition": "andrea_prison",
+                "set": {}
+            },
+            {
+                "texte": "Andréa n'a pas fini en prison",
+                "cible": "45",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1382,8 +1715,17 @@
         "musique": "Royals ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Andréa a fini en prison", "cible": "46", "condition": "andrea_prison", "set": {} },
-            { "texte": "Andréa n'a pas fini en prison", "cible": "45", "set": {} }
+            {
+                "texte": "Andréa a fini en prison",
+                "cible": "46",
+                "condition": "andrea_prison",
+                "set": {}
+            },
+            {
+                "texte": "Andréa n'a pas fini en prison",
+                "cible": "45",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1415,9 +1757,29 @@
         "musique": "My friends ‐ Red Hot Chili Peppers",
         "infos": "Andréa reconnaît Sacha, mais ne sais pas qu'elle est avec Charlie.",
         "choix": [
-            { "texte": "Alex accepte de retourner voir ses parents", "cible": "47", "set": {"alex_parents": true, "andrea_vu_sacha": true} },
-            { "texte": "Si Alex refuse et que Charlie a choisit sa carrière scène 40", "cible": "48", "condition": "charlie_carriere", "set": {"alex_parents": false} },
-            { "texte": "Si Alex refuse et que Charlie a choisit ses amis scène 40", "cible": "49", "set": {"alex_parents": false} }
+            {
+                "texte": "Alex accepte de retourner voir ses parents",
+                "cible": "47",
+                "set": {
+                    "alex_parents": true,
+                    "andrea_vu_sacha": true
+                }
+            },
+            {
+                "texte": "Si Alex refuse et que Charlie a choisit sa carrière scène 40",
+                "cible": "48",
+                "condition": "charlie_carriere",
+                "set": {
+                    "alex_parents": false
+                }
+            },
+            {
+                "texte": "Si Alex refuse et que Charlie a choisit ses amis scène 40",
+                "cible": "49",
+                "set": {
+                    "alex_parents": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1449,8 +1811,17 @@
         "musique": "My Least Favorite Life ‐ Lera Lynn",
         "infos": "",
         "choix": [
-            { "texte": "Si Charlie a choisit sa carrière scène 40", "cible": "48", "condition": "charlie_carriere", "set": {} },
-            { "texte": "Si Charlie a choisit ses amis scène 40", "cible": "49", "set": {} }
+            {
+                "texte": "Si Charlie a choisit sa carrière scène 40",
+                "cible": "48",
+                "condition": "charlie_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie a choisit ses amis scène 40",
+                "cible": "49",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1482,8 +1853,17 @@
         "musique": "Turning Tables ‐ Adèle",
         "infos": "",
         "choix": [
-            { "texte": "Si Charlie a choisit sa carrière scène 40", "cible": "48", "condition": "charlie_carriere", "set": {} },
-            { "texte": "Si Charlie a choisit ses amis scène 40", "cible": "49", "set": {} }
+            {
+                "texte": "Si Charlie a choisit sa carrière scène 40",
+                "cible": "48",
+                "condition": "charlie_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie a choisit ses amis scène 40",
+                "cible": "49",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1515,7 +1895,11 @@
         "musique": "With or Without you ‐ U2",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "50", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "50",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1547,7 +1931,11 @@
         "musique": "Cry me a river ‐ Justin Timberlake",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "50", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "50",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1579,9 +1967,23 @@
         "musique": "Departure (Home) ‐ Max Richter",
         "infos": "",
         "choix": [
-            { "texte": "Si Andréa a fini en prison", "cible": "54", "condition": "andrea_prison", "set": {} },
-            { "texte": "Si Alex n'a pas demandé d'argent à ses parents", "cible": "51", "set": {} },
-            { "texte": "Si Alex a demandé de l'argent à ses parents", "cible": "52", "condition": "alex_parents", "set": {} }
+            {
+                "texte": "Si Andréa a fini en prison",
+                "cible": "54",
+                "condition": "andrea_prison",
+                "set": {}
+            },
+            {
+                "texte": "Si Alex n'a pas demandé d'argent à ses parents",
+                "cible": "51",
+                "set": {}
+            },
+            {
+                "texte": "Si Alex a demandé de l'argent à ses parents",
+                "cible": "52",
+                "condition": "alex_parents",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1613,7 +2015,11 @@
         "musique": "Dreaming my Dreams ‐ The Cranberries",
         "infos": "",
         "choix": [
-            { "texte": "Suite", "cible": "53", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "53",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1645,10 +2051,29 @@
         "musique": "Bang Bang ‐ Nancy Sinatra",
         "infos": "",
         "choix": [
-            { "texte": "Si Charlie Carrière et Camille a accepté le marché (scène 42/43?)", "cible": "55", "condition": "camille_aide_charlie", "set": {} },
-            { "texte": "Si Charlie Carrière et Camille a refusé le marché", "cible": "58", "condition": "charlie_carriere", "set": {} },
-            { "texte": "Si Charlie Amis et Andréa est allé voir Sacha", "cible": "56", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Si Charlie Amis et Andréa n'est pas allé voir Sacha", "cible": "59", "set": {} }
+            {
+                "texte": "Si Charlie Carrière et Camille a accepté le marché (scène 42/43?)",
+                "cible": "55",
+                "condition": "camille_aide_charlie",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Carrière et Camille a refusé le marché",
+                "cible": "58",
+                "condition": "charlie_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Amis et Andréa est allé voir Sacha",
+                "cible": "56",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Amis et Andréa n'est pas allé voir Sacha",
+                "cible": "59",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1680,10 +2105,29 @@
         "musique": "A world Alone ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Si Charlie Carrière et Camille a refusé d'aider Charlie", "cible": "58", "condition": "charlie_carriere", "set": {} },
-            { "texte": "Si Charlie Carrière et Camille a accepté d'aider Charlie", "cible": "55", "condition": "camille_aide_charlie", "set": {} },
-            { "texte": "Si Charlie Amis et Andréa est allé voir Sacha", "cible": "56", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Si Charlie Amis et Andréa n'est pas allé voir Sacha", "cible": "60", "set": {} }
+            {
+                "texte": "Si Charlie Carrière et Camille a refusé d'aider Charlie",
+                "cible": "58",
+                "condition": "charlie_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Carrière et Camille a accepté d'aider Charlie",
+                "cible": "55",
+                "condition": "camille_aide_charlie",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Amis et Andréa est allé voir Sacha",
+                "cible": "56",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Si Charlie Amis et Andréa n'est pas allé voir Sacha",
+                "cible": "60",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1715,9 +2159,23 @@
         "musique": "A world Alone ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Charlie Carrière et Camille a refusé d'aider", "cible": "58", "condition": "charlie_carriere", "set": {} },
-            { "texte": "Charlie Carrière et Camille a accepté d'aider", "cible": "55", "condition": "camille_aide_charlie", "set": {} },
-            { "texte": "Charlie a privilégié ses amis", "cible": "57", "set": {} }
+            {
+                "texte": "Charlie Carrière et Camille a refusé d'aider",
+                "cible": "58",
+                "condition": "charlie_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Charlie Carrière et Camille a accepté d'aider",
+                "cible": "55",
+                "condition": "camille_aide_charlie",
+                "set": {}
+            },
+            {
+                "texte": "Charlie a privilégié ses amis",
+                "cible": "57",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1749,8 +2207,17 @@
         "musique": "Lithium ‐ Nirvana",
         "infos": "",
         "choix": [
-            { "texte": "Si Alex est allé voir ses parents", "cible": "59", "condition": "alex_parents", "set": {} },
-            { "texte": "Sinon", "cible": "57", "set": {} }
+            {
+                "texte": "Si Alex est allé voir ses parents",
+                "cible": "59",
+                "condition": "alex_parents",
+                "set": {}
+            },
+            {
+                "texte": "Sinon",
+                "cible": "57",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1781,7 +2248,13 @@
         "mise_en_scene": "Andréa fait sa demande en mariage à Sacha.",
         "musique": "Little Love ‐ Aaron",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "63", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "63",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -1811,7 +2284,15 @@
         "mise_en_scene": "Un corps sous un drap, Alex est en panique, et légèrement stone. Charlie finira par embarquer Alex.",
         "musique": "Marion Barfs ‐ BO Requiem for a dream",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "61", "set": {"mort_ange_overdose": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "61",
+                "set": {
+                    "mort_ange_overdose": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (27 ans)",
@@ -1841,7 +2322,15 @@
         "mise_en_scene": "Charlie installe un micro sur Ange et lui redonne les consigne pour ne pas se faire tuer. Avant de le laisser partir.\nOn entend un coup de feu puis la musique de fin.",
         "musique": "Karma Police ‐ Radiohead",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "61", "set": {"mort_ange_domi": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "61",
+                "set": {
+                    "mort_ange_domi": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Domi",
@@ -1871,7 +2360,15 @@
         "mise_en_scene": "Un corps est recouvert d'un drap. Alex est en panique, mais ne dit rien sur l'identité de la passagère. Andréa regarde le nom et le dit tout haut, avant d'appeler les flics.",
         "musique": "Sound of silence ‐ Simon & Garfunkel",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "62", "set": {"mort_sacha_alex": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "62",
+                "set": {
+                    "mort_sacha_alex": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (27 ans)",
@@ -1901,7 +2398,15 @@
         "mise_en_scene": "Un corps est recouvert d'un drap. Alex descend après avoir entendu le bruit, et retrouve Andréa en panique.",
         "musique": "Sound of silence ‐ Simon & Garfunkel",
         "infos": "Parce que Andréa joue dans la scène, le corps d'Ange est recouvert par un drap.",
-        "choix": [ { "texte": "Suite", "cible": "61", "set": {"mort_ange_accident": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "61",
+                "set": {
+                    "mort_ange_accident": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (27 ans)",
@@ -1932,9 +2437,24 @@
         "musique": "Colorblind ‐ Counting Crows",
         "infos": "Cette scène est entièrement musicale et se termine lorsque Camille sort.",
         "choix": [
-            { "texte": "Si le frère est mort d'une overdose", "cible": "65", "condition": "mort_ange_overdose", "set": {} },
-            { "texte": "Si le frère est tué par Domi avec le piège de Charlie", "cible": "66", "condition": "mort_ange_domi", "set": {} },
-            { "texte": "Si le frère est tué par Andréa, dans un accident de voiture", "cible": "64", "condition": "mort_ange_accident", "set": {} }
+            {
+                "texte": "Si le frère est mort d'une overdose",
+                "cible": "65",
+                "condition": "mort_ange_overdose",
+                "set": {}
+            },
+            {
+                "texte": "Si le frère est tué par Domi avec le piège de Charlie",
+                "cible": "66",
+                "condition": "mort_ange_domi",
+                "set": {}
+            },
+            {
+                "texte": "Si le frère est tué par Andréa, dans un accident de voiture",
+                "cible": "64",
+                "condition": "mort_ange_accident",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -1965,7 +2485,13 @@
         "mise_en_scene": "Le corps est sur une table, recouvert d'un drapé. Charlie entre, peut découvrir le corps, le recouvrir et s'en aller.",
         "musique": "Colorblind ‐ Counting Crows",
         "infos": "Cette scène est entièrement musicale et se termine lorsque Charlie sort.",
-        "choix": [ { "texte": "Suite", "cible": "67", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "67",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -2145,7 +2671,13 @@
         "mise_en_scene": "Deux chaises pour simuler le canapé. Alex et Andréa sur les chaises, un verre en main. Ils discutent un peu avant l'entrée de Charlie. Camille arrive plus tard. Si possible juste après le tir de Charlie. Mais si elle ne tire pas, après quelques minutes. La scène prend fin rapidement après l'arrivée de Camille. L'idéal est de commencé la scène quelques secondes avant l'entrée de Charlie.",
         "musique": "Where is my mind ‐ Placebo",
         "infos": "Les joueurs ne doivent pas reproduire à l'identique ce qu'il s'est passé dans la première version. Ils peuvent se servir de ce qu'il s'est passé dans l'acte 1.",
-        "choix": [ { "texte": "Suite", "cible": "69", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "69",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (27 ans)",
@@ -2175,7 +2707,13 @@
         "mise_en_scene": "Les 4 amis sont assis autour d'une table dans un bar, après la cérémonie de mariage, avant la soirée. Il y a de la musique en fond sonore. Dès que la musique \"Paint it Black\" passe, le ton entre les amis montent.",
         "musique": "For What It's Worth ‐ Buffalo Springfield ; Paint it black ‐ Rolling Stones ; Turn! Turn! Turn! ‐ The Byrds ; You'll Know You Were Loved ‐ Lou Reed.",
         "infos": "Comme il y a une bande sonore sur cette scène, la scène prend fin à la fin de la musique, et non au début comme pour les autres scènes.",
-        "choix": [ { "texte": "Suite", "cible": "70", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "70",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (23 ans)",
@@ -2205,7 +2743,13 @@
         "mise_en_scene": "Alex est allongé, il se réveille à peine. Noa est debout, prête à faire ses annonces. Au bout d'un certain temps, Ange débarque, mettant fin à la scène.",
         "musique": "Radioactive ‐ Imagine Dragons",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "71", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "71",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex",
@@ -2235,7 +2779,13 @@
         "mise_en_scene": "Il ya 2 tables séparées avec deux chaises. Les deux chaises de la table 1 sont orientées vers la table 2 tandis qu'une des chaises de la table 2 tourne le dos à la table 1, tandis que l'autre chaise (où sera assise Sacha) est face à la table 1. Dans un premier temps, Charlie et Andréa boivent un verre à la table 1. Sacha vient s'assoir à la table 2. Dans un second temps Charlie se lève et se dirige vers Sacha tandis que Domi fait son entrée et va s'assoir avec Andréa. La scène prend fin quand Domi a donné sa carte de visite à Andrea.",
         "musique": "Call me maybe ‐ Carly Rae Jepsen",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "72", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "72",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Domi",
@@ -2265,7 +2815,13 @@
         "mise_en_scene": "Une table avec deux chaises. Andréa arrive avec une bouteille de vin.",
         "musique": "Wherever you are ‐ Celeste Prince",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "73", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "73",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -2295,7 +2851,13 @@
         "mise_en_scene": "Deux chaises accolées, comme une salle d'attente. Le jeune frère est sur une chaise et attend. Camille arrive. Puis, peu de temps après, Alex sort des toilettes. Finalement Charlie entre comme flic, elle doit faire signer des papiers. En tant qu'orga, vous pouvez intervenir en tans que Capitaine de la police, annonçant qu'Alex peut sortir mais que le jeune garçon est convoqué au tribunal.",
         "musique": "How I roll ‐ Charlie Mars",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "74", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "74",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (23 ans)",
@@ -2325,7 +2887,13 @@
         "mise_en_scene": "Charlie est assise à une table avec une chaise, deux feuilles et un stylo. La mère de Charlie, est en coulisse et improvise la lettre reçue par Charlie. Lettre qui attend une réponse. Il est possible, tout de suite après, de faire la rencontre entre Charlie et sa mère.",
         "musique": "United State of Eurasia ‐ Muse",
         "infos": "La mère peut totalement inventer sa vie",
-        "choix": [ { "texte": "Suite", "cible": "75", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "75",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -2355,7 +2923,13 @@
         "mise_en_scene": "Charlie attend Domi à une table. Elle annonce qu'elle veut arrêter et Domi s'énerve avant de lui proposer son marché.",
         "musique": "Bulletproof Cupid ‐ Placebo",
         "infos": "Ici, Domi va très lourdement insister pour que Charlie fasse le coup, quit à menacer Sacha.",
-        "choix": [ { "texte": "Suite", "cible": "76", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "76",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Domi",
@@ -2386,8 +2960,20 @@
         "musique": "The Angry River ‐ S.I. Itswa & Father John",
         "infos": "",
         "choix": [
-            { "texte": "Si Charlie a accepté le dernier coup scène précédente", "cible": "77", "set": {"charlie_accepte_coup": true} },
-            { "texte": "Si Charlie n'a pas accepté le dernier coup scène précédente", "cible": "78", "set": {"charlie_accepte_coup": false} }
+            {
+                "texte": "Si Charlie a accepté le dernier coup scène précédente",
+                "cible": "77",
+                "set": {
+                    "charlie_accepte_coup": true
+                }
+            },
+            {
+                "texte": "Si Charlie n'a pas accepté le dernier coup scène précédente",
+                "cible": "78",
+                "set": {
+                    "charlie_accepte_coup": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2418,7 +3004,13 @@
         "mise_en_scene": "La camionnette est symboliser par deux chaises. Charlie attend assise dans le camion quand Andréa entre en scène quelques secondes après. La scène prend fin quand Charlie décide de partir, avec ou sans Andréa.",
         "musique": "Uprising ‐ Muse",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "79", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "79",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -2448,7 +3040,13 @@
         "mise_en_scene": "La camionnette est symboliser par deux chaises. Charlie attend assise dans le camion quand Andréa entre en scène quelques secondes après. La scène prend fin quand Charlie décide de partir, avec ou sans Andréa.",
         "musique": "Uprising ‐ Muse",
         "infos": "Charlie peut convaincre Andréa de ne pas venir",
-        "choix": [ { "texte": "Suite", "cible": "79", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "79",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -2479,9 +3077,29 @@
         "musique": "Trouble ‐ Coldplay",
         "infos": "Camille choisit de privilégier sa carrière ou d'aider ses amis.\nSelon son choix, ce sera la situation 1 ou 2 pour l'énoncer dans la scène suivante",
         "choix": [
-            { "texte": "Andréa a suivi Charlie et Camille a choisit sa carrière", "cible": "80", "set": {"andrea_suit_charlie": true, "camille_carriere": true} },
-            { "texte": "Andréa a suivi Charlie et Camille a choisit ses amis", "cible": "83", "set": {"andrea_suit_charlie": true, "camille_carriere": false} },
-            { "texte": "Andréa n'a pas suivi Charlie", "cible": "81", "set": {"andrea_suit_charlie": false} }
+            {
+                "texte": "Andréa a suivi Charlie et Camille a choisit sa carrière",
+                "cible": "80",
+                "set": {
+                    "andrea_suit_charlie": true,
+                    "camille_carriere": true
+                }
+            },
+            {
+                "texte": "Andréa a suivi Charlie et Camille a choisit ses amis",
+                "cible": "83",
+                "set": {
+                    "andrea_suit_charlie": true,
+                    "camille_carriere": false
+                }
+            },
+            {
+                "texte": "Andréa n'a pas suivi Charlie",
+                "cible": "81",
+                "set": {
+                    "andrea_suit_charlie": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2513,8 +3131,21 @@
         "musique": "Lust for Life ‐ Iggy Pop",
         "infos": "",
         "choix": [
-            { "texte": "Camille laisse partir Andréa", "cible": "81", "set": {"camille_laisse_andrea": true} },
-            { "texte": "Camille ne laisse pas partir Andréa", "cible": "83", "set": {"camille_laisse_andrea": false, "andrea_prison": true} }
+            {
+                "texte": "Camille laisse partir Andréa",
+                "cible": "81",
+                "set": {
+                    "camille_laisse_andrea": true
+                }
+            },
+            {
+                "texte": "Camille ne laisse pas partir Andréa",
+                "cible": "83",
+                "set": {
+                    "camille_laisse_andrea": false,
+                    "andrea_prison": true
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2546,8 +3177,18 @@
         "musique": "Love the way you lie ‐ Rihanna feat Eminem",
         "infos": "",
         "choix": [
-            { "texte": "Andréa n'a pas suivi Charlie", "cible": "82", "condition": "andrea_suit_charlie", "set": {} },
-            { "texte": "Andréa a suivi Charlie mais Camille l'a laissé partir", "cible": "84", "condition": "camille_laisse_andrea", "set": {} }
+            {
+                "texte": "Andréa n'a pas suivi Charlie",
+                "cible": "82",
+                "condition": "andrea_suit_charlie",
+                "set": {}
+            },
+            {
+                "texte": "Andréa a suivi Charlie mais Camille l'a laissé partir",
+                "cible": "84",
+                "condition": "camille_laisse_andrea",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2579,8 +3220,17 @@
         "musique": "My Friends ‐ Red hot chili peppers",
         "infos": "Andréa reconnaît Sacha, mais ne sais pas qu'elle est avec Charlie.",
         "choix": [
-            { "texte": "Camille a privilégié sa carrière", "cible": "85", "condition": "camille_carriere", "set": {} },
-            { "texte": "Camille a privilégié ses amis", "cible": "86", "set": {} }
+            {
+                "texte": "Camille a privilégié sa carrière",
+                "cible": "85",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Camille a privilégié ses amis",
+                "cible": "86",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2612,8 +3262,17 @@
         "musique": "My Least Favorite Life ‐ Lera Lynn",
         "infos": "",
         "choix": [
-            { "texte": "Camille a privilégié sa carrière", "cible": "85", "condition": "camille_carriere", "set": {} },
-            { "texte": "Camille a privilégié ses amis", "cible": "86", "set": {} }
+            {
+                "texte": "Camille a privilégié sa carrière",
+                "cible": "85",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Camille a privilégié ses amis",
+                "cible": "86",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2645,7 +3304,11 @@
         "musique": "My Friends ‐ Red hot chili peppers",
         "infos": "Andréa sait que Sacha sort avec Charlie, aussi essayera t'il d'en tenir compte.",
         "choix": [
-            { "texte": "Suite", "cible": "85", "set": {} }
+            {
+                "texte": "Suite",
+                "cible": "85",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2677,9 +3340,26 @@
         "musique": "Hey Brother ‐ Avicii",
         "infos": "Ange en veut à Camille d'être si absente et fait donc des conneries…",
         "choix": [
-            { "texte": "Alex a accepté de retourner voir ses parents", "cible": "87", "set": {"alex_parents": true} },
-            { "texte": "Alex n'accepte pas de retourner vois ses parents", "cible": "88", "set": {"alex_parents": false} },
-            { "texte": "Andréa est allé en prison", "cible": "89", "condition": "andrea_prison", "set": {} }
+            {
+                "texte": "Alex a accepté de retourner voir ses parents",
+                "cible": "87",
+                "set": {
+                    "alex_parents": true
+                }
+            },
+            {
+                "texte": "Alex n'accepte pas de retourner vois ses parents",
+                "cible": "88",
+                "set": {
+                    "alex_parents": false
+                }
+            },
+            {
+                "texte": "Andréa est allé en prison",
+                "cible": "89",
+                "condition": "andrea_prison",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2711,9 +3391,26 @@
         "musique": "Hey Brother ‐ Avicii",
         "infos": "Ange propose à Camille qu'elle trouve elle‐même Domi.",
         "choix": [
-            { "texte": "Alex a accepté de retourner voir ses parents", "cible": "87", "set": {"alex_parents": true} },
-            { "texte": "Alex n'accepte pas de retourner vois ses parents", "cible": "88", "set": {"alex_parents": false} },
-            { "texte": "Andréa est allé en prison", "cible": "89", "condition": "andrea_prison", "set": {} }
+            {
+                "texte": "Alex a accepté de retourner voir ses parents",
+                "cible": "87",
+                "set": {
+                    "alex_parents": true
+                }
+            },
+            {
+                "texte": "Alex n'accepte pas de retourner vois ses parents",
+                "cible": "88",
+                "set": {
+                    "alex_parents": false
+                }
+            },
+            {
+                "texte": "Andréa est allé en prison",
+                "cible": "89",
+                "condition": "andrea_prison",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2745,9 +3442,22 @@
         "musique": "Turning Tables ‐ Adèle",
         "infos": "",
         "choix": [
-            { "texte": "Alex n'a pas demandé d'argent à son père", "cible": "83", "set": {} },
-            { "texte": "Si Alex a demandé de l'argent à son père et Andréa est allé voir Sacha", "cible": "85", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Si Alex a demandé de l'argent à son père et Andréa n'est pas allé voir Sacha", "cible": "87", "set": {} }
+            {
+                "texte": "Alex n'a pas demandé d'argent à son père",
+                "cible": "83",
+                "set": {}
+            },
+            {
+                "texte": "Si Alex a demandé de l'argent à son père et Andréa est allé voir Sacha",
+                "cible": "85",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Si Alex a demandé de l'argent à son père et Andréa n'est pas allé voir Sacha",
+                "cible": "87",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2779,10 +3489,27 @@
         "musique": "Departure (Home) ‐ Max Richter",
         "infos": "",
         "choix": [
-            { "texte": "Si Andréa n'est pas en prison et Alex n'a pas demandé d'argent", "cible": "89", "set": {} },
-            { "texte": "Si Andréa n'est pas en prison et Alex a demandé de l'argent", "cible": "90", "set": {} },
-            { "texte": "Sinon Camille a privilégié sa carrière", "cible": "93", "condition": "camille_carriere", "set": {} },
-            { "texte": "Sinon Camille a privilégié ses amis", "cible": "91", "set": {} }
+            {
+                "texte": "Si Andréa n'est pas en prison et Alex n'a pas demandé d'argent",
+                "cible": "89",
+                "set": {}
+            },
+            {
+                "texte": "Si Andréa n'est pas en prison et Alex a demandé de l'argent",
+                "cible": "90",
+                "set": {}
+            },
+            {
+                "texte": "Sinon Camille a privilégié sa carrière",
+                "cible": "93",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Sinon Camille a privilégié ses amis",
+                "cible": "91",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2814,8 +3541,17 @@
         "musique": "Dreaming my Dreams ‐ The Cranberries",
         "infos": "",
         "choix": [
-            { "texte": "Camille a privilégié sa carrière", "cible": "92", "condition": "camille_carriere", "set": {} },
-            { "texte": "Camille a privilégié ses amis", "cible": "91", "set": {} }
+            {
+                "texte": "Camille a privilégié sa carrière",
+                "cible": "92",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Camille a privilégié ses amis",
+                "cible": "91",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2847,9 +3583,23 @@
         "musique": "Bang Bang ‐ Nancy Sinatra",
         "infos": "",
         "choix": [
-            { "texte": "Si Camille a privilégié sa carrière et Andréa est allé voir Sacha", "cible": "94", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Si Camille a privilégié sa carrière et Andréa n'est pas allé voir Sacha", "cible": "95", "condition": "camille_carriere", "set": {} },
-            { "texte": "Si Camille a privilégié ses amis", "cible": "91", "set": {} }
+            {
+                "texte": "Si Camille a privilégié sa carrière et Andréa est allé voir Sacha",
+                "cible": "94",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Si Camille a privilégié sa carrière et Andréa n'est pas allé voir Sacha",
+                "cible": "95",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Si Camille a privilégié ses amis",
+                "cible": "91",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2881,10 +3631,28 @@
         "musique": "Royals ‐ Lorde",
         "infos": "Le gardien est présent pour montrer le manque d'intimité. Il est donc présent et intervient si il y a des écarts.",
         "choix": [
-            { "texte": "Andréa a finit en prison", "cible": "93", "condition": "andrea_prison", "set": {} },
-            { "texte": "Andréa n'a pas fini en prison et Alex n'est pas allé voir ses parents", "cible": "92", "set": {} },
-            { "texte": "Alex est allé voir ses parents et Andréa est allé voir Sacha", "cible": "94", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Alex est allé voir ses parents et Andréa n'est pas allé voir Sacha", "cible": "95", "set": {} }
+            {
+                "texte": "Andréa a finit en prison",
+                "cible": "93",
+                "condition": "andrea_prison",
+                "set": {}
+            },
+            {
+                "texte": "Andréa n'a pas fini en prison et Alex n'est pas allé voir ses parents",
+                "cible": "92",
+                "set": {}
+            },
+            {
+                "texte": "Alex est allé voir ses parents et Andréa est allé voir Sacha",
+                "cible": "94",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Alex est allé voir ses parents et Andréa n'est pas allé voir Sacha",
+                "cible": "95",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2916,8 +3684,17 @@
         "musique": "A world Alone ‐ Lorde",
         "infos": "",
         "choix": [
-            { "texte": "Andréa est allé voir Sacha", "cible": "94", "condition": "andrea_vu_sacha", "set": {} },
-            { "texte": "Andréa n'est pas allé voir Sacha", "cible": "95", "set": {} }
+            {
+                "texte": "Andréa est allé voir Sacha",
+                "cible": "94",
+                "condition": "andrea_vu_sacha",
+                "set": {}
+            },
+            {
+                "texte": "Andréa n'est pas allé voir Sacha",
+                "cible": "95",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -2948,7 +3725,13 @@
         "mise_en_scene": "Andréa est au sol, un flacon vide à côté. Camille frappe puis entre chez Andréa. Elle appelle une ambulance avant de prendre Andréa dans ses bras. Ce dernier se réveille mais reste faible et pleure sur se vie gâchée.",
         "musique": "A world Alone ‐ Lorde",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "96", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "96",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Ambulancier",
@@ -2978,7 +3761,13 @@
         "mise_en_scene": "Une table, deux chaises face à face. Charlie attend l'arrivée de Sacha. Le gardien met fin à la visite au bout de 10 minutes ou si la voix s'élève.",
         "musique": "Somebody That I used to know ‐ Gotye",
         "infos": "Le gardien est présent pour montrer le manque d'intimité. Il est donc présent et intervient si il y a des écarts.",
-        "choix": [ { "texte": "Suite", "cible": "97", "set": {} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "97",
+                "set": {}
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "(Absent)",
@@ -3009,10 +3798,30 @@
         "musique": "Somebody That I used to know ‐ Gotye",
         "infos": "Le gardien est présent pour montrer le manque d'intimité. Il est donc présent et intervient si il y a des écarts.",
         "choix": [
-            { "texte": "Camille laisse partie Andréa scène 80 et Alex ne va pas voir ses parents", "cible": "98", "condition": "camille_laisse_andrea", "set": {} },
-            { "texte": "Charlie ne donne pas d'infos sur Domi à Camille", "cible": "99", "set": {"infos_domi": false} },
-            { "texte": "Alex accepte d'aller voir ses parents", "cible": "100", "condition": "alex_parents", "set": {} },
-            { "texte": "Alex n'accepte pas de voir ses parents et Andréa n'est pas allé voir Sacha", "cible": "101", "set": {} }
+            {
+                "texte": "Camille laisse partie Andréa scène 80 et Alex ne va pas voir ses parents",
+                "cible": "98",
+                "condition": "camille_laisse_andrea",
+                "set": {}
+            },
+            {
+                "texte": "Charlie ne donne pas d'infos sur Domi à Camille",
+                "cible": "99",
+                "set": {
+                    "infos_domi": false
+                }
+            },
+            {
+                "texte": "Alex accepte d'aller voir ses parents",
+                "cible": "100",
+                "condition": "alex_parents",
+                "set": {}
+            },
+            {
+                "texte": "Alex n'accepte pas de voir ses parents et Andréa n'est pas allé voir Sacha",
+                "cible": "101",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -3044,9 +3853,26 @@
         "musique": "Somebody That I used to know ‐ Gotye",
         "infos": "Le gardien est présent pour montrer le manque d'intimité. Il est donc présent et intervient si il y a des écarts.",
         "choix": [
-            { "texte": "Camille a privilégié sa carrière", "cible": "98", "condition": "camille_carriere", "set": {} },
-            { "texte": "Camille a privilégié ses amis et Charlie lui donne des infos sur Domi", "cible": "100", "set": {"infos_domi": true} },
-            { "texte": "Camille a privilégié ses amis et Charlie ne lui donne pas d'infos sur Domi", "cible": "99", "set": {"infos_domi": false} }
+            {
+                "texte": "Camille a privilégié sa carrière",
+                "cible": "98",
+                "condition": "camille_carriere",
+                "set": {}
+            },
+            {
+                "texte": "Camille a privilégié ses amis et Charlie lui donne des infos sur Domi",
+                "cible": "100",
+                "set": {
+                    "infos_domi": true
+                }
+            },
+            {
+                "texte": "Camille a privilégié ses amis et Charlie ne lui donne pas d'infos sur Domi",
+                "cible": "99",
+                "set": {
+                    "infos_domi": false
+                }
+            }
         ],
         "joueurs": {
             "alex": {
@@ -3078,9 +3904,22 @@
         "musique": "Little Love ‐ Aaron",
         "infos": "",
         "choix": [
-            { "texte": "La mère d'Andréa a survécu", "cible": "102", "set": {} },
-            { "texte": "La mère d'Andréa n'a pas survécu et Camille a privilégier ses amis", "cible": "105", "set": {} },
-            { "texte": "La mère d'Andréa n'a pas survécu et Camille a privilégier sa carrière", "cible": "98", "condition": "camille_carriere", "set": {} }
+            {
+                "texte": "La mère d'Andréa a survécu",
+                "cible": "102",
+                "set": {}
+            },
+            {
+                "texte": "La mère d'Andréa n'a pas survécu et Camille a privilégier ses amis",
+                "cible": "105",
+                "set": {}
+            },
+            {
+                "texte": "La mère d'Andréa n'a pas survécu et Camille a privilégier sa carrière",
+                "cible": "98",
+                "condition": "camille_carriere",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -3111,7 +3950,15 @@
         "mise_en_scene": "Un corps sous un drap, Alex est en panique, et légèrement stone. Charlie finira par embarquer Alex.",
         "musique": "Marion Barfs ‐ BO Requiem for a dream",
         "infos": "Ange est normalement joué(e) par le joueur jouant Andréa, d'où le drapé sur le corps.",
-        "choix": [ { "texte": "Suite", "cible": "103", "set": {"mort_ange_overdose": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "103",
+                "set": {
+                    "mort_ange_overdose": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex",
@@ -3141,7 +3988,15 @@
         "mise_en_scene": "Camille est assise à une table, attendant, pendant qu'Andréa est assis plus loin, à l'extérieur du bureau. Le capitaine arrive pour comprendre ce qu'il s'est passé.",
         "musique": "Karma Police ‐ Radiohead",
         "infos": "",
-        "choix": [ { "texte": "Suite", "cible": "104", "set": {"mort_civil_domi": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "104",
+                "set": {
+                    "mort_civil_domi": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Capitaine des Stups",
@@ -3171,7 +4026,15 @@
         "mise_en_scene": "Un corps recouvert d'un drap. Alex est en panique, mais ne dit rien sur l'identité de la passagère. Camille regarde le nom et le dit tout haut. Elle finit par embarquer Alex.",
         "musique": "Sound of silence ‐ Simon & Garfunkel",
         "infos": "Sacha est normalement joué(e) par le joueur jouant Camille, d'où le drapé sur le corps.",
-        "choix": [ { "texte": "Suite", "cible": "104", "set": {"mort_sacha_alex": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "104",
+                "set": {
+                    "mort_sacha_alex": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex",
@@ -3201,7 +4064,15 @@
         "mise_en_scene": "Un corps est recouvert d'un drap. Alex est en panique, mais ne dit rien sur l'identité de la passagère. Andréa regarde le nom et le dit tout haut, avant d'appeler les flics.",
         "musique": "Sound of silence ‐ Simon & Garfunkel",
         "infos": "Parce que Andréa joue dans la scène, le corps d'Ange est recouvert par un drap.",
-        "choix": [ { "texte": "Suite", "cible": "103", "set": {"mort_ange_accident": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "103",
+                "set": {
+                    "mort_ange_accident": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Alex (27 ans)",
@@ -3231,7 +4102,15 @@
         "mise_en_scene": "Un corps recouvert d'un drap. Andréa se morfond sur le corps de celle qu'il aime quand Camille débarque avant d'appeler une ambulance.",
         "musique": "Sound of silence ‐ Simon & Garfunkel",
         "infos": "Sacha est normalement joué(e) par le joueur jouant Camille, d'où le drapé sur le corps.",
-        "choix": [ { "texte": "Suite", "cible": "104", "set": {"mort_sacha_andrea": true} } ],
+        "choix": [
+            {
+                "texte": "Suite",
+                "cible": "104",
+                "set": {
+                    "mort_sacha_andrea": true
+                }
+            }
+        ],
         "joueurs": {
             "alex": {
                 "role": "Corps",
@@ -3262,8 +4141,18 @@
         "musique": "Colorblind ‐ Counting Crows",
         "infos": "Cette scène est entièrement musicale et se termine lorsque Camille sort.",
         "choix": [
-            { "texte": "Si le frère est mort d'une overdose", "cible": "107", "condition": "mort_ange_overdose", "set": {} },
-            { "texte": "Si le frère est tué par Andréa", "cible": "106", "condition": "mort_ange_accident", "set": {} }
+            {
+                "texte": "Si le frère est mort d'une overdose",
+                "cible": "107",
+                "condition": "mort_ange_overdose",
+                "set": {}
+            },
+            {
+                "texte": "Si le frère est tué par Andréa",
+                "cible": "106",
+                "condition": "mort_ange_accident",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
@@ -3295,9 +4184,24 @@
         "musique": "Colorblind ‐ Counting Crows",
         "infos": "Cette scène est entièrement musicale et se termine lorsque Charlie sort.",
         "choix": [
-            { "texte": "Si Sacha est morte lors de l'altercation entre Domi et Camille", "cible": "108", "condition": "mort_civil_domi", "set": {} },
-            { "texte": "Si Sacha est morte dans l'accident de voiture d'Alex", "cible": "109", "condition": "mort_sacha_alex", "set": {} },
-            { "texte": "Si Sacha est morte dans l'accident de voiture d'Andréa", "cible": "105", "condition": "mort_sacha_andrea", "set": {} }
+            {
+                "texte": "Si Sacha est morte lors de l'altercation entre Domi et Camille",
+                "cible": "108",
+                "condition": "mort_civil_domi",
+                "set": {}
+            },
+            {
+                "texte": "Si Sacha est morte dans l'accident de voiture d'Alex",
+                "cible": "109",
+                "condition": "mort_sacha_alex",
+                "set": {}
+            },
+            {
+                "texte": "Si Sacha est morte dans l'accident de voiture d'Andréa",
+                "cible": "105",
+                "condition": "mort_sacha_andrea",
+                "set": {}
+            }
         ],
         "joueurs": {
             "alex": {
