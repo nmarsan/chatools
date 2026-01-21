@@ -1,5 +1,5 @@
 <?php
-// --- 1. CONFIGURATION ET CHARGEMENT test jenkins ---
+// --- 1. CONFIGURATION ET CHARGEMENT ---
 $state_file = 'gamestate.json';
 
 // Initialisation si fichier absent
@@ -169,9 +169,6 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         .btn-mini { padding:8px 12px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
         .btn-export { background: #3498db; color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; }
         
-        .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #c0392b; color: white; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s; }
-        .btn-choice:hover { background: #e74c3c; padding-left: 20px; }
-
         .hist-item { font-size: 0.85em; border-bottom: 1px solid #333; padding: 8px 0; color: #aaa; }
         .hist-act { color: #3498db; font-style: italic; margin-top:3px; }
     </style>
@@ -260,17 +257,37 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                     <input type="hidden" name="choice_text" value="">
                     <input type="hidden" name="set_flags" value="">
                     <?php foreach($scene['choix'] as $choix): 
-                        $show = true;
+                        $condition_ok = true;
+                        
+                        // Vérification conditions
                         if(isset($choix['condition'])) {
                             if ($choix['condition'] === 'aucune_prison') {
-                                if (!empty($state['flags']['camille_prison']) || !empty($state['flags']['charlie_prison'])) $show = false;
-                            } elseif (empty($state['flags'][$choix['condition']])) $show = false;
+                                if (!empty($state['flags']['camille_prison']) || !empty($state['flags']['charlie_prison'])) $condition_ok = false;
+                            } elseif (empty($state['flags'][$choix['condition']])) {
+                                $condition_ok = false;
+                            }
                         }
-                        if($show): ?>
+
+                        // Affichage
+                        $show = $condition_ok || $is_orga;
+                        
+                        if($show): 
+                            $style_btn = "display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s;";
+                            $bg_color = "#c0392b";
+                            $text_add = "";
+
+                            if (!$condition_ok && $is_orga) {
+                                $bg_color = "#e67e22";
+                                $style_btn .= "border: 2px dashed #fff;";
+                                $text_add = " <span style='font-size:0.7em; opacity:0.8;'>(⚠️ Forcer ce choix)</span>";
+                            }
+                            $style_btn .= "background: $bg_color; color: white;";
+                        ?>
+                        
                         <input type="hidden" id="f_<?php echo $choix['cible']; ?>" value='<?php echo json_encode($choix['set']); ?>'>
-                        <button type="submit" name="target_scene" value="<?php echo $choix['cible']; ?>" class="btn-choice"
+                        <button type="submit" name="target_scene" value="<?php echo $choix['cible']; ?>" style="<?php echo $style_btn; ?>"
                             onclick="this.form.set_flags.value=document.getElementById('f_<?php echo $choix['cible']; ?>').value; this.form.choice_text.value='<?php echo addslashes($choix['texte']); ?>'">
-                            ➜ <?php echo $choix['texte']; ?>
+                            ➜ <?php echo $choix['texte'] . $text_add; ?>
                         </button>
                     <?php endif; endforeach; ?>
                 </form>
