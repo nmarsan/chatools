@@ -9,8 +9,12 @@ if (!file_exists($state_file)) {
 
 // Lecture des données
 $state = json_decode(file_get_contents($state_file), true);
-$json_data = file_get_contents('scenario.json');
-$scenarios = json_decode($json_data, true);
+if (file_exists('scenario.json')) {
+    $json_data = file_get_contents('scenario.json');
+    $scenarios = json_decode($json_data, true);
+} else {
+    die("Le fichier scenario.json est manquant !");
+}
 
 // Détection de la vue (Orga ou Joueur)
 $view = $_GET['view'] ?? 'orga';
@@ -50,22 +54,27 @@ if (isset($_GET['export']) && $is_orga) {
         <div class="timeline">
             <?php 
             $last_act = 0;
-            foreach ($state['history'] as $step): 
-                $sData = $scenarios[$step['id']] ?? [];
-                $current_act = 1;
-                if ($step['id'] >= 29 && $step['id'] <= 67) $current_act = 2.1;
-                if ($step['id'] >= 68) $current_act = 2.2;
-                if ($current_act != $last_act && $last_act != 0) { echo "<div class='act-break'>Passage à l'Acte $current_act</div>"; }
-                $last_act = $current_act;
-            ?>
-                <div class="step">
-                    <div class="step-header">
-                        <span class="step-id">Scène <?php echo $step['id']; ?></span>
-                        <span class="step-title"><?php echo $sData['titre'] ?? 'Scène Inconnue'; ?></span>
+            if (!empty($state['history'])) {
+                foreach ($state['history'] as $step): 
+                    $sData = $scenarios[$step['id']] ?? [];
+                    $current_act = 1;
+                    if ($step['id'] >= 29 && $step['id'] <= 67) $current_act = 2.1;
+                    if ($step['id'] >= 68) $current_act = 2.2;
+                    if ($current_act != $last_act && $last_act != 0) { echo "<div class='act-break'>Passage à l'Acte $current_act</div>"; }
+                    $last_act = $current_act;
+                ?>
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-id">Scène <?php echo $step['id']; ?></span>
+                            <span class="step-title"><?php echo $sData['titre'] ?? 'Scène Inconnue'; ?></span>
+                        </div>
+                        <div class="step-choice"><strong>CHOIX :</strong> <?php echo $step['action']; ?></div>
                     </div>
-                    <div class="step-choice"><strong>CHOIX :</strong> <?php echo $step['action']; ?></div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; 
+            } else {
+                echo "<p>Aucun historique pour le moment.</p>";
+            }
+            ?>
             <div class="step">
                 <div class="step-header"><span class="step-id">FIN</span><span class="step-title">Situation Finale : Scène <?php echo $state['scene']; ?></span></div>
             </div>
@@ -116,7 +125,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_orga) {
 // --- 4. PRÉPARATION AFFICHAGE ---
 $current_id = $state['scene'];
 $scene = $scenarios[$current_id] ?? null;
-if (!$scene) die("Erreur scène $current_id. <a href='?action=reset'>Reset</a>");
+
+// GESTION ERREUR SCENE MANQUANTE
+if (!$scene) {
+    if ($is_orga) {
+        echo "<div style='font-family:sans-serif; text-align:center; padding:50px;'>";
+        echo "<h1>⚠️ Erreur Critique</h1>";
+        echo "<p>La scène <strong>$current_id</strong> n'existe pas dans le fichier scenario.json.</p>";
+        echo "<p>Il est possible que le fichier JSON soit mal formé ou incomplet.</p>";
+        echo "<form method='POST'><input type='hidden' name='action' value='reset'><button style='padding:10px 20px; cursor:pointer; background:#e74c3c; color:white; border:none; font-size:1.2em;'>RÉINITIALISER LE JEU (RESET)</button></form>";
+        echo "</div>";
+        exit;
+    } else {
+        echo "En attente de l'organisateur..."; 
+        echo "<meta http-equiv='refresh' content='2'>";
+        exit;
+    }
+}
 
 // Config Joueurs
 $config = [
@@ -169,6 +194,9 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         .btn-mini { padding:8px 12px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
         .btn-export { background: #3498db; color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; font-size: 0.9em; display: flex; align-items: center; }
         
+        .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #c0392b; color: white; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s; }
+        .btn-choice:hover { background: #e74c3c; padding-left: 20px; }
+
         .hist-item { font-size: 0.85em; border-bottom: 1px solid #333; padding: 8px 0; color: #aaa; }
         .hist-act { color: #3498db; font-style: italic; margin-top:3px; }
     </style>
@@ -205,15 +233,24 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                 <a href="?view=orga&export=1" target="_blank" class="btn-export" title="Générer PDF">📄 PDF</a>
                 <form method="POST"><input type="hidden" name="action" value="reset"><button class="btn-mini" style="background:#444; color:#e74c3c;" onclick="return confirm('Tout effacer ?');">⚠️ Reset</button></form>
             </div>
-	    <?php if(!empty($scene['accessoires'])): ?>
-                <div class="box" style="border-left-color:#e74c3c; background:#4a2323;">
-                    <span class="box-title">🎒 Accessoires & Matériel</span>
-                    <strong style="color:#ffcccc;"><?php echo nl2br($scene['accessoires']); ?></strong>
-                </div>
-            <?php endif; ?>
 
-            <?php if(!empty($scene['musique'])): ?>
-            ...
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                
+                <div class="box" style="flex: 1; border-left-color:#e74c3c; background:#4a2323; min-width: 200px;">
+                    <span class="box-title">🎒 Accessoires & Matériel</span>
+                    <strong style="color:#ffcccc;">
+                        <?php echo !empty($scene['accessoires']) ? nl2br($scene['accessoires']) : '-'; ?>
+                    </strong>
+                </div>
+
+                <div class="box" style="flex: 1; border-left-color:#2ecc71; background:#1e3525; min-width: 200px;">
+                    <span class="box-title">📍 Lieu / Décor</span>
+                    <strong style="color:#abebc6;">
+                        <?php echo !empty($scene['lieu']) ? nl2br($scene['lieu']) : '-'; ?>
+                    </strong>
+                </div>
+
+            </div>
 
             <?php if(!empty($scene['musique'])): ?>
                 <div class="box" style="border-left-color:#9b59b6;">
@@ -268,7 +305,7 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                     <?php foreach($scene['choix'] as $choix): 
                         $condition_ok = true;
                         
-                        // Vérification conditions
+                        // Vérification des conditions
                         if(isset($choix['condition'])) {
                             if ($choix['condition'] === 'aucune_prison') {
                                 if (!empty($state['flags']['camille_prison']) || !empty($state['flags']['charlie_prison'])) $condition_ok = false;
@@ -277,16 +314,19 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                             }
                         }
 
-                        // Affichage
+                        // Logique d'affichage :
+                        // - Le Joueur ne voit que si la condition est OK.
+                        // - L'Orga voit TOUT (God Mode), mais avec une alerte si la condition n'est pas remplie.
                         $show = $condition_ok || $is_orga;
                         
                         if($show): 
+                            // Style spécial pour l'Orga si la condition n'est pas remplie (Bouton "Force")
                             $style_btn = "display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s;";
-                            $bg_color = "#c0392b";
+                            $bg_color = "#c0392b"; // Rouge standard
                             $text_add = "";
 
                             if (!$condition_ok && $is_orga) {
-                                $bg_color = "#e67e22";
+                                $bg_color = "#e67e22"; // Orange pour dire "Attention, chemin forcé"
                                 $style_btn .= "border: 2px dashed #fff;";
                                 $text_add = " <span style='font-size:0.7em; opacity:0.8;'>(⚠️ Forcer ce choix)</span>";
                             }
