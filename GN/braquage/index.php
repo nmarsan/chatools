@@ -205,6 +205,15 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                 <a href="?view=orga&export=1" target="_blank" class="btn-export" title="Générer PDF">📄 PDF</a>
                 <form method="POST"><input type="hidden" name="action" value="reset"><button class="btn-mini" style="background:#444; color:#e74c3c;" onclick="return confirm('Tout effacer ?');">⚠️ Reset</button></form>
             </div>
+	    <?php if(!empty($scene['accessoires'])): ?>
+                <div class="box" style="border-left-color:#e74c3c; background:#4a2323;">
+                    <span class="box-title">🎒 Accessoires & Matériel</span>
+                    <strong style="color:#ffcccc;"><?php echo nl2br($scene['accessoires']); ?></strong>
+                </div>
+            <?php endif; ?>
+
+            <?php if(!empty($scene['musique'])): ?>
+            ...
 
             <?php if(!empty($scene['musique'])): ?>
                 <div class="box" style="border-left-color:#9b59b6;">
