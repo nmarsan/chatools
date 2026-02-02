@@ -1,0 +1,22 @@
+{
+    "nath": {
+        "pass": "chef",
+        "role": "orga"
+    },
+    "alex": {
+        "pass": "joueur",
+        "role": "alex"
+    },
+    "andrea": {
+        "pass": "joueur",
+        "role": "andrea"
+    },
+    "camille": {
+        "pass": "joueur",
+        "role": "camille"
+    },
+    "charlie": {
+        "pass": "joueur",
+        "role": "charlie"
+    }
+}
