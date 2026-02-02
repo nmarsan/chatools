@@ -122,6 +122,73 @@ if ($is_admin && isset($_GET['view']) && array_key_exists($_GET['view'], $config
 }
 $is_orga_view = ($view === 'orga');
 
+
+// --- 3. GESTION DE L'EXPORT PDF (RÉTABLIE) ---
+if (isset($_GET['export']) && $is_admin) {
+    ?>
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Rapport de Session - Braquage</title>
+        <style>
+            body { font-family: 'Georgia', serif; background: #fff; color: #000; padding: 40px; max-width: 800px; margin: 0 auto; }
+            .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
+            .title { font-size: 2.5em; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+            .meta { color: #555; font-style: italic; margin-top: 10px; }
+            .timeline { border-left: 2px solid #ccc; margin-left: 20px; padding-left: 20px; }
+            .step { margin-bottom: 25px; position: relative; page-break-inside: avoid; }
+            .step::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: #000; border-radius: 50%; }
+            .step-header { display: flex; align-items: baseline; gap: 10px; }
+            .step-id { font-weight: bold; color: #888; font-size: 0.8em; text-transform: uppercase; }
+            .step-title { font-weight: bold; font-size: 1.2em; }
+            .step-choice { background: #f0f0f0; padding: 10px 15px; border-radius: 4px; margin-top: 5px; border-left: 4px solid #555; font-family: sans-serif; font-size: 0.9em; }
+            .act-break { margin: 40px 0; border-top: 1px dashed #aaa; text-align: center; font-weight: bold; padding-top: 10px; color: #555; }
+            @media print { .no-print { display: none; } body { padding: 0; } }
+            .btn-print { position: fixed; top: 20px; right: 20px; padding: 10px 20px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <a href="javascript:window.print()" class="btn-print no-print">🖨️ Imprimer / PDF</a>
+        <div class="header">
+            <div class="title">BRAQUAGE</div>
+            <div class="meta">Rapport de la session du <?php echo date('d/m/Y à H:i'); ?></div>
+        </div>
+        <div class="timeline">
+            <?php 
+            $last_act = 0;
+            if (!empty($state['history'])) {
+                foreach ($state['history'] as $step): 
+                    $sData = $scenarios[$step['id']] ?? [];
+                    $current_act = 1;
+                    if ($step['id'] >= 29 && $step['id'] <= 67) $current_act = 2.1;
+                    if ($step['id'] >= 68) $current_act = 2.2;
+                    if ($current_act != $last_act && $last_act != 0) { echo "<div class='act-break'>Passage à l'Acte $current_act</div>"; }
+                    $last_act = $current_act;
+                ?>
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-id">Scène <?php echo $step['id']; ?></span>
+                            <span class="step-title"><?php echo $sData['titre'] ?? 'Scène Inconnue'; ?></span>
+                        </div>
+                        <div class="step-choice"><strong>CHOIX :</strong> <?php echo $step['action']; ?></div>
+                    </div>
+                <?php endforeach; 
+            } else {
+                echo "<p>Aucun historique pour le moment.</p>";
+            }
+            ?>
+            <div class="step">
+                <div class="step-header"><span class="step-id">FIN</span><span class="step-title">Situation Finale : Scène <?php echo $state['scene']; ?></span></div>
+            </div>
+        </div>
+    </body>
+    </html>
+    <?php
+    exit;
+}
+
+
 // --- TRAITEMENT DES ACTIONS (POST) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin) {
     
@@ -216,6 +283,9 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         .header-right { display: flex; gap: 20px; align-items: center; }
         .logout-btn { color: #aaa; text-decoration: none; font-size: 0.8em; border: 1px solid #444; padding: 5px 10px; border-radius: 4px; transition:0.3s; }
         .logout-btn:hover { background: #c0392b; color: white; border-color:#c0392b; }
+        
+        .btn-mini { padding:10px 15px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
+        .btn-export { background: #3498db; color: white; text-decoration: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; font-size: 0.9em; display: inline-block; }
 
         .wrapper { display: flex; max-width: 1600px; margin: 20px auto; gap: 20px; padding: 0 10px; align-items: flex-start; flex-wrap: wrap; }
         .main-col { flex: 3; background: #2b2b2b; padding: 30px; border-radius: 8px; border-top: 5px solid <?php echo $config[$view]['bg']; ?>; box-shadow: 0 4px 15px rgba(0,0,0,0.5); min-width: 300px; }
@@ -231,7 +301,6 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
         
         /* Contrôles Orga */
         .controls-bar { background:#222; padding:10px; margin-bottom:20px; border-radius:5px; display:flex; gap:10px; align-items: center; flex-wrap: wrap; }
-        .btn-mini { padding:10px 15px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
         
         .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s; color: white; background: #c0392b; }
         .btn-choice:hover { background: #e74c3c; transform: translateX(5px); }
@@ -292,7 +361,6 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                             <thead><tr><th>Joueur</th><th>Mot de passe</th></tr></thead>
                             <tbody>
                                 <?php foreach($users_db as $u => $d): 
-                                    // Vérification du mot de passe par défaut (différent pour Nath)
                                     $default_pass = ($u === 'nath') ? 'chef' : 'joueur';
                                     $is_default = ($d['pass'] === $default_pass); 
                                 ?>
@@ -347,6 +415,9 @@ elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
                     </select>
                 </form>
                 <form method="POST"><input type="hidden" name="action" value="back"><button class="btn-mini" style="background:#555; color:#fff;" title="Retour Arrière">⬅ Précédent</button></form>
+                
+                <a href="?view=orga&export=1" target="_blank" class="btn-export" title="Générer PDF">📄 PDF</a>
+
                 <form method="POST"><input type="hidden" name="action" value="reset"><button class="btn-mini" style="background:#444; color:#e74c3c;" onclick="return confirm('Tout effacer ?');">⚠️ Reset</button></form>
             </div>
 
