@@ -109,7 +109,7 @@ $is_admin = ($user_role === 'orga');
 
 if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // NAVIGATION STANDARD
+    // NAVIGATION
     if (isset($_POST['target_scene'])) {
         $state['history'][] = ['from' => $state['scene'], 'to' => $_POST['target_scene'], 'text' => $_POST['choice_text'], 'time' => date('H:i')];
         $state['scene'] = $_POST['target_scene'];
@@ -118,7 +118,7 @@ if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
         file_put_contents($state_file, json_encode($state));
     }
 
-    // SAUT DE SCENE FORCÉ (NOUVEAU)
+    // SAUT DE SCENE FORCÉ
     if (isset($_POST['force_scene'])) {
         $target = $_POST['scene_id'];
         $state['history'][] = ['from' => $state['scene'], 'to' => $target, 'text' => '⚠️ SAUT MANUEL (MJ)', 'time' => date('H:i')];
@@ -232,6 +232,13 @@ $current_scene = $scenarios[$state['scene']] ?? null;
         .submenu.active { display: block; }
 
         /* UI ELEMENTS */
+        .timeline { position: relative; padding-left: 15px; margin-top: 10px; border-left: 2px solid var(--border); }
+        .timeline-item { margin-bottom: 15px; position: relative; }
+        .timeline-item::before { content: ''; position: absolute; left: -21px; top: 0; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; border: 2px solid var(--bg); }
+        .t-time { font-size: 0.75em; color: var(--text-muted); }
+        .t-action { font-size: 0.9em; color: var(--text); }
+        .t-scene { color: var(--secondary); font-weight: bold; font-size: 0.8em; }
+
         .gender-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
         .g-switch { display: flex; gap: 5px; }
         .g-btn { border: 1px solid var(--border); background: transparent; color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-size: 0.8em; cursor: pointer; }
@@ -279,25 +286,57 @@ $current_scene = $scenarios[$state['scene']] ?? null;
 
     <div class="content">
         <div id="tab-scene" class="tab-content active">
-            <div class="card">
-                <span class="card-label">Contexte</span>
-                <div style="display:flex; flex-direction:column; gap:8px; font-size:0.9em; color:var(--text-muted);">
-                    <div><i class="fa-solid fa-location-dot" style="color:var(--primary); width:20px; text-align:center;"></i> <?php echo $current_scene['lieu']; ?></div>
-                    <?php if (!empty($current_scene['musique'])): ?>
-                        <div><i class="fa-solid fa-music" style="color:var(--secondary); width:20px; text-align:center;"></i> <?php echo $current_scene['musique']; ?></div>
-                    <?php endif; ?>
-                    <?php if (!empty($current_scene['accessoires'])): ?>
-                        <div><i class="fa-solid fa-box-open" style="color:orange; width:20px; text-align:center;"></i> <?php echo $current_scene['accessoires']; ?></div>
-                    <?php endif; ?>
+            
+            <?php if($is_admin): ?>
+                <div class="card">
+                    <span class="card-label">Contexte</span>
+                    <div style="display:flex; flex-direction:column; gap:8px; font-size:0.9em; color:var(--text-muted);">
+                        <div><i class="fa-solid fa-location-dot" style="color:var(--primary); width:20px; text-align:center;"></i> <?php echo $current_scene['lieu']; ?></div>
+                        <?php if (!empty($current_scene['musique'])): ?>
+                            <div><i class="fa-solid fa-music" style="color:var(--secondary); width:20px; text-align:center;"></i> <?php echo $current_scene['musique']; ?></div>
+                        <?php endif; ?>
+                        <?php if (!empty($current_scene['accessoires'])): ?>
+                            <div><i class="fa-solid fa-box-open" style="color:orange; width:20px; text-align:center;"></i> <?php echo $current_scene['accessoires']; ?></div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card" style="border-left: 4px solid var(--text-muted);">
-                <span class="card-label">Narration</span>
-                <div class="narrative-text" style="font-style:italic;">
-                    <?php echo nl2br(htmlspecialchars($current_scene['intro'])); ?>
+                <div class="card" style="border-left: 4px solid var(--text-muted);">
+                    <span class="card-label">Narration</span>
+                    <div class="narrative-text" style="font-style:italic;">
+                        <?php echo nl2br(htmlspecialchars($current_scene['intro'])); ?>
+                    </div>
                 </div>
-            </div>
+
+                <div class="card" style="border-left: 4px solid #f59e0b;">
+                    <span class="card-label" style="color:#f59e0b;">MJ - INFORMATIONS & MISE EN SCÈNE</span>
+
+                    <?php if (!empty($current_scene['personnages'])): ?>
+                        <div style="margin-bottom:15px;">
+                            <strong style="color:var(--text); font-size:0.9em;"><i class="fa-solid fa-users" style="color:var(--secondary);"></i> Présents :</strong>
+                            <span style="color:var(--text-muted); font-size:0.9em; margin-left:5px;"><?php echo $current_scene['personnages']; ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($current_scene['mise_en_scene'])): ?>
+                        <div style="margin-bottom:15px;">
+                            <strong style="color:var(--text); font-size:0.9em;"><i class="fa-solid fa-clapperboard" style="color:var(--primary);"></i> Mise en scène :</strong>
+                            <div class="narrative-text" style="color:var(--text); margin-top:5px; border-left:2px solid var(--border); padding-left:10px;">
+                                <?php echo nl2br(htmlspecialchars($current_scene['mise_en_scene'])); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($current_scene['infos'])): ?>
+                        <div>
+                            <strong style="color:var(--text); font-size:0.9em;"><i class="fa-solid fa-circle-info" style="color:#10b981;"></i> Infos MJ :</strong>
+                            <div class="narrative-text" style="color:var(--text-muted); margin-top:5px; font-style:italic;">
+                                <?php echo nl2br(htmlspecialchars($current_scene['infos'])); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
 
             <?php if(!$is_admin && isset($current_scene['joueurs'][$user_role])): ?>
                 <div class="card" style="border-left: 4px solid var(--primary);">
@@ -438,7 +477,7 @@ $current_scene = $scenarios[$state['scene']] ?? null;
                     <select name="scene_id" class="theme-select" style="margin-bottom:15px;">
                         <?php foreach($scenarios as $id => $sc): ?>
                             <option value="<?php echo $id; ?>" <?php if($state['scene'] == $id) echo 'selected'; ?>>
-                                <?php echo $id . '. ' . $sc['titre']; ?>
+                                <?php echo $id . '. ' . ($sc['titre'] ?? 'Scène '.$id); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
