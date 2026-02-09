@@ -2,493 +2,550 @@
 session_start();
 
 // ============================================================================
-// 1. CONFIGURATION ET DONNÉES
+// 1. CONFIG ET DONNÉES
 // ============================================================================
 $state_file = 'gamestate.json';
 $scenario_file = 'scenario.json';
 $users_file = 'users.json'; 
 
-// --- A. Initialisation des UTILISATEURS ---
+// Création fichiers par défaut
 if (!file_exists($users_file)) {
-    $default_users = [
-        'nath'    => ['pass' => 'chef',   'role' => 'orga'],
-        'alex'    => ['pass' => 'joueur', 'role' => 'alex'],
-        'andrea'  => ['pass' => 'joueur', 'role' => 'andrea'],
-        'camille' => ['pass' => 'joueur', 'role' => 'camille'],
-        'charlie' => ['pass' => 'joueur', 'role' => 'charlie'],
-    ];
-    file_put_contents($users_file, json_encode($default_users, JSON_PRETTY_PRINT));
+    $default = ['nath'=>['pass'=>'chef','role'=>'orga'], 'alex'=>['pass'=>'joueur','role'=>'alex']];
+    file_put_contents($users_file, json_encode($default));
 }
-$users_db = json_decode(file_get_contents($users_file), true);
-
-// --- B. Initialisation du JEU ---
 if (!file_exists($state_file)) {
-    file_put_contents($state_file, json_encode(["scene" => "1", "history" => [], "flags" => []]));
+    file_put_contents($state_file, json_encode(["scene" => "1", "history" => [], "flags" => [], "genres" => ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"]]));
 }
+
+$users_db = json_decode(file_get_contents($users_file), true);
 $state = json_decode(file_get_contents($state_file), true);
+$scenarios = json_decode(file_get_contents($scenario_file), true);
 
-if (file_exists($scenario_file)) {
-    $scenarios = json_decode(file_get_contents($scenario_file), true);
-} else {
-    die("Le fichier scenario.json est manquant !");
+if (!isset($state['genres'])) {
+    $state['genres'] = ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"];
 }
 
-// --- C. API AJAX (Sync) ---
-if (isset($_GET['check_sync'])) {
-    header('Content-Type: application/json');
-    echo json_encode(['current_scene' => $state['scene']]);
-    exit;
-}
-
-// Config Visuelle des Rôles
-$config = [
-    'orga'    => ['name' => 'ORGA (NATH)', 'bg' => '#2c3e50', 'color' => '#fff'],
-    'alex'    => ['name' => 'ALEX',       'bg' => '#f1c40f', 'color' => '#000'],
-    'andrea'  => ['name' => 'ANDRÉA',     'bg' => '#2ecc71', 'color' => '#000'],
-    'camille' => ['name' => 'CAMILLE',    'bg' => '#3498db', 'color' => '#fff'],
-    'charlie' => ['name' => 'CHARLIE',    'bg' => '#9b59b6', 'color' => '#fff'],
-];
-
 // ============================================================================
-// 2. ACTIONS ET LOGIQUE
+// 2. GESTION DES THÈMES
 // ============================================================================
-
-// Déconnexion
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    session_destroy();
+if (isset($_GET['set_theme'])) {
+    setcookie('app_theme', $_GET['set_theme'], time() + (86400 * 30), "/");
     header("Location: index.php");
     exit;
 }
+$current_theme = $_COOKIE['app_theme'] ?? 'theme-dark';
 
-// Login
-$login_error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_user'])) {
-    $u = strtolower(trim($_POST['login_user']));
-    $p = $_POST['login_pass'];
-
-    if (isset($users_db[$u]) && $users_db[$u]['pass'] === $p) {
-        $_SESSION['user_role'] = $users_db[$u]['role'];
-        header("Location: index.php");
-        exit;
-    } else {
-        $login_error = "Identifiant ou mot de passe incorrect.";
-    }
-}
-
-// VÉRIFICATION CONNEXION
-if (!isset($_SESSION['user_role'])) {
+// ============================================================================
+// 3. EXPORT PDF (PAGE IMPRIMABLE)
+// ============================================================================
+if (isset($_GET['mode']) && $_GET['mode'] === 'export_view' && isset($_SESSION['role']) && $_SESSION['role'] === 'orga') {
     ?>
     <!DOCTYPE html>
     <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>Braquage - Connexion</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Rapport - Braquage</title>
         <style>
-            body { background: #111; color: #eee; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-            .login-box { background: #222; padding: 40px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.8); text-align: center; width: 300px; border-top: 5px solid #e74c3c; }
-            h1 { margin-bottom: 30px; letter-spacing: 2px; text-transform: uppercase; }
-            input { width: 100%; padding: 12px; margin: 10px 0; background: #333; border: 1px solid #444; color: white; border-radius: 4px; box-sizing: border-box; font-size: 1em;}
-            button { width: 100%; padding: 12px; background: #e74c3c; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; font-size: 1.1em;}
-            button:hover { background: #c0392b; }
-            .error { color: #e74c3c; margin-bottom: 15px; font-size: 0.9em; background: rgba(231, 76, 60, 0.1); padding: 10px; border-radius: 4px; }
+            body { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; padding: 40px; color: #1a1a1a; background: #fff; max-width: 800px; margin: 0 auto; line-height: 1.5; }
+            .header { border-bottom: 3px solid #000; padding-bottom: 20px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end; }
+            h1 { margin: 0; font-size: 2.5em; text-transform: uppercase; letter-spacing: 2px; }
+            .meta { color: #666; font-size: 0.9em; text-align: right; }
+            .timeline { position: relative; padding-left: 30px; border-left: 3px solid #e0e0e0; margin-left: 10px; }
+            .event { position: relative; margin-bottom: 30px; padding-left: 20px; }
+            .dot { position: absolute; left: -38px; top: 5px; width: 16px; height: 16px; background: #fff; border: 3px solid #e74c3c; border-radius: 50%; box-shadow: 0 0 0 3px #fff; }
+            .time { font-weight: bold; color: #e74c3c; font-size: 0.85em; margin-bottom: 4px; }
+            .movement { font-size: 1.1em; margin-bottom: 8px; font-weight: 600; color: #333; }
+            .movement span { font-weight: 400; color: #777; }
+            .action-box { background: #f8f9fa; border-left: 4px solid #333; padding: 10px 15px; font-style: italic; color: #555; border-radius: 0 4px 4px 0; }
+            .btn-print { position: fixed; top: 20px; right: 20px; background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+            .btn-print:hover { background: #000; }
+            @media print {
+                .no-print { display: none; }
+                body { -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 0; }
+                .timeline { border-color: #ccc; }
+            }
         </style>
     </head>
     <body>
-        <div class="login-box">
-            <h1>Braquage</h1>
-            <?php if($login_error): ?><div class="error"><?php echo $login_error; ?></div><?php endif; ?>
-            <form method="POST">
-                <input type="text" name="login_user" placeholder="Identifiant" required autofocus>
-                <input type="password" name="login_pass" placeholder="Mot de passe" required>
-                <button type="submit">ENTRER</button>
-            </form>
-        </div>
-    </body>
-    </html>
-    <?php
-    exit;
-}
-
-// --- LOGIQUE UTILISATEUR CONNECTÉ ---
-
-$user_role = $_SESSION['user_role'];
-$is_admin = ($user_role === 'orga');
-$view = $user_role;
-
-// Si Admin, peut changer de vue
-if ($is_admin && isset($_GET['view']) && array_key_exists($_GET['view'], $config)) {
-    $view = $_GET['view'];
-}
-$is_orga_view = ($view === 'orga');
-
-
-// --- 3. GESTION DE L'EXPORT PDF (RÉTABLIE) ---
-if (isset($_GET['export']) && $is_admin) {
-    ?>
-    <!DOCTYPE html>
-    <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>Rapport de Session - Braquage</title>
-        <style>
-            body { font-family: 'Georgia', serif; background: #fff; color: #000; padding: 40px; max-width: 800px; margin: 0 auto; }
-            .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 20px; margin-bottom: 30px; }
-            .title { font-size: 2.5em; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
-            .meta { color: #555; font-style: italic; margin-top: 10px; }
-            .timeline { border-left: 2px solid #ccc; margin-left: 20px; padding-left: 20px; }
-            .step { margin-bottom: 25px; position: relative; page-break-inside: avoid; }
-            .step::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: #000; border-radius: 50%; }
-            .step-header { display: flex; align-items: baseline; gap: 10px; }
-            .step-id { font-weight: bold; color: #888; font-size: 0.8em; text-transform: uppercase; }
-            .step-title { font-weight: bold; font-size: 1.2em; }
-            .step-choice { background: #f0f0f0; padding: 10px 15px; border-radius: 4px; margin-top: 5px; border-left: 4px solid #555; font-family: sans-serif; font-size: 0.9em; }
-            .act-break { margin: 40px 0; border-top: 1px dashed #aaa; text-align: center; font-weight: bold; padding-top: 10px; color: #555; }
-            @media print { .no-print { display: none; } body { padding: 0; } }
-            .btn-print { position: fixed; top: 20px; right: 20px; padding: 10px 20px; background: #e74c3c; color: white; text-decoration: none; border-radius: 5px; font-family: sans-serif; font-weight: bold; }
-        </style>
-    </head>
-    <body>
-        <a href="javascript:window.print()" class="btn-print no-print">🖨️ Imprimer / PDF</a>
+        <button onclick="window.print()" class="btn-print no-print">🖨️ IMPRIMER / PDF</button>
         <div class="header">
-            <div class="title">BRAQUAGE</div>
-            <div class="meta">Rapport de la session du <?php echo date('d/m/Y à H:i'); ?></div>
+            <h1>BRAQUAGE</h1>
+            <div class="meta">Rapport de session<br>Date : <?php echo date('d/m/Y'); ?></div>
         </div>
         <div class="timeline">
-            <?php 
-            $last_act = 0;
-            if (!empty($state['history'])) {
-                foreach ($state['history'] as $step): 
-                    $sData = $scenarios[$step['id']] ?? [];
-                    $current_act = 1;
-                    if ($step['id'] >= 29 && $step['id'] <= 67) $current_act = 2.1;
-                    if ($step['id'] >= 68) $current_act = 2.2;
-                    if ($current_act != $last_act && $last_act != 0) { echo "<div class='act-break'>Passage à l'Acte $current_act</div>"; }
-                    $last_act = $current_act;
-                ?>
-                    <div class="step">
-                        <div class="step-header">
-                            <span class="step-id">Scène <?php echo $step['id']; ?></span>
-                            <span class="step-title"><?php echo $sData['titre'] ?? 'Scène Inconnue'; ?></span>
-                        </div>
-                        <div class="step-choice"><strong>CHOIX :</strong> <?php echo $step['action']; ?></div>
-                    </div>
-                <?php endforeach; 
-            } else {
-                echo "<p>Aucun historique pour le moment.</p>";
-            }
+            <?php foreach($state['history'] as $h): 
+                $titre_from = $scenarios[$h['from']]['titre'] ?? 'Scène '.$h['from'];
+                $titre_to = $scenarios[$h['to']]['titre'] ?? 'Scène '.$h['to'];
             ?>
-            <div class="step">
-                <div class="step-header"><span class="step-id">FIN</span><span class="step-title">Situation Finale : Scène <?php echo $state['scene']; ?></span></div>
+            <div class="event">
+                <div class="dot"></div>
+                <div class="time"><?php echo $h['time']; ?></div>
+                <div class="movement"><span>De</span> <?php echo $titre_from; ?> <span>vers</span> <?php echo $titre_to; ?></div>
+                <div class="action-box">"<?php echo htmlspecialchars($h['text']); ?>"</div>
             </div>
+            <?php endforeach; ?>
         </div>
+        <?php if(empty($state['history'])): ?><p style="text-align:center; color:#999; font-style:italic;">Aucun historique disponible.</p><?php endif; ?>
     </body>
     </html>
-    <?php
-    exit;
+    <?php exit;
 }
 
-
-// --- TRAITEMENT DES ACTIONS (POST) ---
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $is_admin) {
-    
-    // 1. Changement de Scène (Classique)
-    if (isset($_POST['target_scene'])) {
-        $action_text = $_POST['choice_text'] ?? 'Navigation';
-        $prev_id = $state['scene'];
-        $prev_title = $scenarios[$prev_id]['titre'] ?? 'Scène '.$prev_id;
-        $state['history'][] = ['id' => $prev_id, 'titre' => $prev_title, 'action' => $action_text];
-        
-        if (isset($_POST['set_flags'])) {
-            $new_flags = json_decode(htmlspecialchars_decode($_POST['set_flags']), true);
-            if (is_array($new_flags)) { $state['flags'] = array_merge($state['flags'], $new_flags); }
-        }
-        $state['scene'] = $_POST['target_scene'];
-        file_put_contents($state_file, json_encode($state));
-        header("Location: index.php?view=$view");
-        exit;
+// ============================================================================
+// 4. ACTIONS LOGIN & ADMIN
+// ============================================================================
+if (isset($_POST['login'])) {
+    $u = $_POST['username'] ?? ''; $p = $_POST['password'] ?? '';
+    if (isset($users_db[$u]) && $users_db[$u]['pass'] === $p) {
+        $_SESSION['user'] = $u; $_SESSION['role'] = $users_db[$u]['role'];
+        header("Location: index.php"); exit;
     }
-    // 2. Retour arrière
-    elseif (isset($_POST['action']) && $_POST['action'] === 'back') {
+}
+if (isset($_GET['logout'])) { session_destroy(); header("Location: index.php"); exit; }
+
+$user_id = $_SESSION['user'] ?? null;
+$user_role = $_SESSION['role'] ?? null;
+$is_admin = ($user_role === 'orga');
+
+if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // NAVIGATION STANDARD
+    if (isset($_POST['target_scene'])) {
+        $state['history'][] = ['from' => $state['scene'], 'to' => $_POST['target_scene'], 'text' => $_POST['choice_text'], 'time' => date('H:i')];
+        $state['scene'] = $_POST['target_scene'];
+        $new_flags = json_decode($_POST['set_flags'], true);
+        if($new_flags) foreach ($new_flags as $f => $v) { $state['flags'][$f] = $v; }
+        file_put_contents($state_file, json_encode($state));
+    }
+
+    // SAUT DE SCENE FORCÉ (NOUVEAU)
+    if (isset($_POST['force_scene'])) {
+        $target = $_POST['scene_id'];
+        $state['history'][] = ['from' => $state['scene'], 'to' => $target, 'text' => '⚠️ SAUT MANUEL (MJ)', 'time' => date('H:i')];
+        $state['scene'] = $target;
+        file_put_contents($state_file, json_encode($state));
+    }
+
+    // ANNULATION (UNDO)
+    if (isset($_POST['undo_last'])) {
         if (!empty($state['history'])) {
-            $last = array_pop($state['history']);
-            $state['scene'] = $last['id'];
+            $last_move = array_pop($state['history']); 
+            $state['scene'] = $last_move['from'];
             file_put_contents($state_file, json_encode($state));
         }
-        header("Location: index.php?view=$view");
-        exit;
     }
-    // 3. Saut rapide
-    elseif (isset($_POST['jump_scene']) && !empty($_POST['jump_scene'])) {
-        $prev_id = $state['scene'];
-        $prev_title = $scenarios[$prev_id]['titre'] ?? 'Scène '.$prev_id;
-        $state['history'][] = ['id' => $prev_id, 'titre' => $prev_title, 'action' => '🚀 Saut rapide'];
-        $state['scene'] = $_POST['jump_scene'];
+
+    if (isset($_POST['reset_game'])) {
+        $state = ["scene" => "1", "history" => [], "flags" => [], "genres" => ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"]];
         file_put_contents($state_file, json_encode($state));
-        header("Location: index.php?view=$view");
-        exit;
     }
-    // 4. Reset
-    elseif (isset($_POST['action']) && $_POST['action'] === 'reset') {
-        $state = ["scene" => "1", "history" => [], "flags" => []];
+    if (isset($_POST['set_genre'])) {
+        $state['genres'][$_POST['p_id']] = $_POST['set_genre'];
         file_put_contents($state_file, json_encode($state));
-        header("Location: index.php?view=$view");
-        exit;
     }
-    // 5. MISE A JOUR DES MOTS DE PASSE (Nouveau)
-    elseif (isset($_POST['action']) && $_POST['action'] === 'update_users') {
-        foreach ($_POST['pass'] as $u => $new_pass) {
-            if (isset($users_db[$u]) && !empty($new_pass)) {
-                $users_db[$u]['pass'] = trim($new_pass);
-            }
-        }
+    if (isset($_POST['change_pw'])) {
+        $users_db[$_POST['u_target']]['pass'] = $_POST['new_pw'];
         file_put_contents($users_file, json_encode($users_db, JSON_PRETTY_PRINT));
-        header("Location: index.php?view=orga");
-        exit;
+        $msg_success = "Mot de passe modifié !";
     }
 }
 
-// --- PRÉPARATION AFFICHAGE ---
-$current_id = $state['scene'];
-$scene = $scenarios[$current_id] ?? null;
-
-if (!$scene) die("Erreur critique : Scène introuvable.");
-
-$role_txt = $scene['joueurs'][$view]['role'] ?? $config[$view]['name'];
-$cons_txt = $scene['joueurs'][$view]['consignes'] ?? "Pas d'instructions spécifiques pour cette scène.";
-
-$act_lbl = "ACTE INDÉFINI"; $act_col = "#777";
-if ($current_id <= 28) { $act_lbl = "ACTE 1"; $act_col = "#3498db"; } 
-elseif ($current_id >= 29 && $current_id <= 67) { $act_lbl = "ACTE 2.1"; $act_col = "#e67e22"; } 
-elseif ($current_id >= 68) { $act_lbl = "ACTE 2.2"; $act_col = "#9b59b6"; }
+$current_scene = $scenarios[$state['scene']] ?? null;
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Braquage - <?php echo $config[$view]['name']; ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Braquage - App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background: #1a1a1a; color: #eee; font-family: sans-serif; margin: 0; padding-top: <?php echo $is_admin ? '50px' : '0'; ?>; padding-bottom: 50px; }
-        
-        .tabs { position: fixed; top: 0; left: 0; width: 100%; height: 50px; background: #000; display: flex; z-index: 1000; border-bottom: 2px solid #444; }
-        .tab { flex: 1; text-align: center; line-height: 50px; color: #777; text-decoration: none; font-weight: bold; font-size: 0.9em; transition:0.2s; border-right: 1px solid #333; }
-        .tab:hover { background: #222; color: #fff; }
-        .tab.active { background: <?php echo $config[$view]['bg']; ?>; color: <?php echo $config[$view]['color']; ?>; border-bottom: 4px solid #fff; }
+        /* VARIABLES */
+        :root {
+            --bg: #111827; --surface: #1f2937; --primary: #ef4444; --secondary: #3b82f6; --text: #f3f4f6; --text-muted: #9ca3af;
+            --btn-text: #ffffff; --border: #374151; --shadow: rgba(0,0,0,0.3);
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        /* THEMES */
+        body.theme-light { --bg: #f8fafc; --surface: #ffffff; --primary: #be123c; --secondary: #2563eb; --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0; --shadow: rgba(0,0,0,0.05); }
+        body.theme-gold { --bg: #000000; --surface: #111111; --primary: #d4af37; --secondary: #c5a059; --text: #e5e5e5; --text-muted: #666; --border: #333; --btn-text: #000; }
+        body.theme-neon { --bg: #0b0214; --surface: #160626; --primary: #d946ef; --secondary: #22d3ee; --text: #e0e0e0; --text-muted: #9385ad; --border: #4a1d96; --btn-text: #ffffff; }
 
-        .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #000; border-bottom: 3px solid <?php echo $config[$view]['bg']; ?>; }
-        .user-info { font-weight: bold; color: <?php echo $config[$view]['bg']; ?>; font-size: 1.2em; text-transform: uppercase; }
+        body { font-family: var(--font-main); background: var(--bg); color: var(--text); margin: 0; padding: 0; padding-bottom: 50px; }
         
-        .header-right { display: flex; gap: 20px; align-items: center; }
-        .logout-btn { color: #aaa; text-decoration: none; font-size: 0.8em; border: 1px solid #444; padding: 5px 10px; border-radius: 4px; transition:0.3s; }
-        .logout-btn:hover { background: #c0392b; color: white; border-color:#c0392b; }
+        /* LOGIN */
+        .login-wrap { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
+        .login-input { width: 100%; max-width: 300px; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 16px; }
         
-        .btn-mini { padding:10px 15px; cursor:pointer; border:none; border-radius:4px; font-weight:bold; }
-        .btn-export { background: #3498db; color: white; text-decoration: none; padding: 10px 15px; border-radius: 4px; font-weight: bold; font-size: 0.9em; display: inline-block; }
+        /* HEADER */
+        header { background: var(--surface); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; position: sticky; top: 0; z-index: 1000; }
+        .header-title { font-weight: 800; font-size: 1.1em; letter-spacing: 0.5px; text-transform: uppercase; }
+        .scene-badge { background: var(--primary); color: var(--btn-text); padding: 4px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-right: 10px; }
 
-        .wrapper { display: flex; max-width: 1600px; margin: 20px auto; gap: 20px; padding: 0 10px; align-items: flex-start; flex-wrap: wrap; }
-        .main-col { flex: 3; background: #2b2b2b; padding: 30px; border-radius: 8px; border-top: 5px solid <?php echo $config[$view]['bg']; ?>; box-shadow: 0 4px 15px rgba(0,0,0,0.5); min-width: 300px; }
-        .side-col { flex: 1; background: #222; padding: 20px; border-radius: 8px; border-left: 1px solid #444; min-width: 250px; }
+        /* TABS */
+        .tabs { display: flex; background: var(--surface); padding: 4px; margin: 15px; border-radius: 8px; border: 1px solid var(--border); }
+        .tab { flex: 1; text-align: center; padding: 10px; border-radius: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; color: var(--text-muted); }
+        .tab.active { background: var(--bg); color: var(--primary); border: 1px solid var(--border); }
 
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 4px; background: <?php echo $act_col; ?>; font-weight: bold; font-size: 0.8em; margin-bottom: 10px; }
-        h1 { margin: 5px 0 20px 0; font-size: 2em; line-height: 1.2; }
-        
-        .box { background: #333; padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 5px solid #555; }
-        .box-title { display: block; color: #aaa; font-size: 0.75em; text-transform: uppercase; font-weight: bold; margin-bottom: 8px; letter-spacing: 1px; }
-        
-        .role-display { text-align: center; padding: 20px; background: <?php echo $config[$view]['bg']; ?>; color: <?php echo $config[$view]['color']; ?>; font-size: 1.5em; font-weight: bold; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        
-        /* Contrôles Orga */
-        .controls-bar { background:#222; padding:10px; margin-bottom:20px; border-radius:5px; display:flex; gap:10px; align-items: center; flex-wrap: wrap; }
-        
-        .btn-choice { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; text-align: left; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 1.1em; transition:0.2s; color: white; background: #c0392b; }
-        .btn-choice:hover { background: #e74c3c; transform: translateX(5px); }
+        /* CONTENT */
+        .content { padding: 0 15px; max-width: 600px; margin: 0 auto; }
+        .tab-content { display: none; } 
+        .tab-content.active { display: block; }
 
-        .hist-item { font-size: 0.85em; border-bottom: 1px solid #333; padding: 8px 0; color: #aaa; }
-        .hist-act { color: #3498db; font-style: italic; margin-top:3px; }
+        .card { background: var(--surface); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid var(--border); box-shadow: 0 2px 4px var(--shadow); }
+        .card-label { text-transform: uppercase; font-size: 0.7em; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; display: block; font-weight: bold; }
+        .role-title { color: var(--secondary); font-size: 1.1em; font-weight: bold; margin-bottom: 10px; }
+        .narrative-text { line-height: 1.5; font-size: 0.95em; color: var(--text); white-space: pre-line; }
 
-        /* Menu Admin Dropdown */
-        .admin-details { position: relative; }
-        .admin-details summary { cursor: pointer; color: #bbb; font-weight: bold; list-style: none; font-size: 0.9em; border: 1px solid #444; padding: 5px 10px; border-radius: 4px; }
-        .admin-details summary:hover { background: #333; color: white; }
-        .admin-details summary::-webkit-details-marker { display: none; }
-        .admin-popup { 
-            position: absolute; top: 40px; right: 0; 
-            background: #222; border: 1px solid #555; 
-            padding: 15px; width: 320px; z-index: 2000; 
-            border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); 
+        /* BUTTONS */
+        .btn { width: 100%; padding: 14px; border-radius: 8px; border: none; font-size: 1em; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn:active { opacity: 0.8; }
+        .btn-action { background: var(--primary); color: var(--btn-text); }
+        
+        /* Bouton Undo Spécifique (Sécurisé) */
+        .btn-undo { 
+            background: transparent; border: 1px solid var(--primary); color: var(--primary); 
+            font-size: 0.85em; padding: 10px; justify-content: center; width: 60%; margin: 0 auto 25px auto; opacity: 0.7; 
+        }
+        .btn-undo:hover { opacity: 1; background: rgba(239,68,68,0.1); }
+
+        .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+        .btn-menu { background: var(--bg); color: var(--text); border: 1px solid var(--border); margin-bottom: 8px; padding: 12px; border-radius: 8px; text-align: left; display: flex; align-items: center; gap: 10px; font-size: 0.95em; }
+        
+        /* THEME SELECTOR DROPDOWN */
+        .theme-select {
+            width: 100%; padding: 12px; border-radius: 8px; font-size: 1em; margin-bottom: 20px; cursor: pointer;
+            background: var(--bg); color: var(--text); border: 1px solid var(--border); 
+            appearance: none; -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23999%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
         }
 
-        .user-table { width:100%; border-collapse: collapse; font-size:0.9em; }
-        .user-table th { text-align:left; color:#888; border-bottom:1px solid #444; padding:5px; }
-        .user-table td { padding: 8px 5px; border-bottom:1px solid #333; vertical-align: middle;}
-        .user-table input { background:#111; border:1px solid #444; color:#fff; padding:5px; border-radius:3px; width:120px; }
-    </style>
-    
-    <script>
-        const mySceneId = "<?php echo $current_id; ?>";
-        setInterval(() => {
-            fetch('?check_sync=1').then(r => r.json()).then(d => {
-                if (d.current_scene !== mySceneId) window.location.reload();
-            });
-        }, 2000);
-    </script>
-</head>
-<body>
-
-<?php if($is_admin): ?>
-<div class="tabs">
-    <?php foreach($config as $k=>$v): ?>
-        <a href="?view=<?php echo $k; ?>" class="tab <?php echo ($view==$k)?'active':''; ?>"><?php echo $v['name']; ?></a>
-    <?php endforeach; ?>
-</div>
-<?php endif; ?>
-
-<div class="header-bar">
-    <div class="user-info">
-        <?php if($is_admin && !$is_orga_view): ?>👁️ VUE : <?php echo $config[$view]['name']; ?><?php else: ?>👤 <?php echo $config[$user_role]['name']; ?><?php endif; ?>
-    </div>
-    
-    <div class="header-right">
-        <?php if($is_admin && $is_orga_view): ?>
-            <details class="admin-details">
-                <summary>⚙️ Gestion Joueurs</summary>
-                <div class="admin-popup">
-                    <form method="POST">
-                        <input type="hidden" name="action" value="update_users">
-                        <table class="user-table">
-                            <thead><tr><th>Joueur</th><th>Mot de passe</th></tr></thead>
-                            <tbody>
-                                <?php foreach($users_db as $u => $d): 
-                                    $default_pass = ($u === 'nath') ? 'chef' : 'joueur';
-                                    $is_default = ($d['pass'] === $default_pass); 
-                                ?>
-                                <tr>
-                                    <td><?php echo ucfirst($u); ?></td>
-                                    <td>
-                                        <input type="text" name="pass[<?php echo $u; ?>]" value="<?php echo $d['pass']; ?>">
-                                        <?php if($is_default): ?>
-                                            <div style="color:#f39c12; font-size:0.8em; margin-top:2px;">(Par défaut)</div>
-                                        <?php else: ?>
-                                            <div style="color:#2ecc71; font-size:0.8em; margin-top:2px;">(Modifié)</div>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                        <button type="submit" class="btn-mini" style="background:#3498db; color:white; width:100%; margin-top:10px;">💾 Enregistrer</button>
-                    </form>
-                    <div style="margin-top:15px; font-size:0.8em; color:#888; text-align:center; font-style:italic;">
-                        ⚠️ En cas d'oubli du mot de passe admin, supprimez le fichier <strong>users.json</strong> sur le serveur pour réinitialiser.
-                    </div>
-                </div>
-            </details>
-        <?php endif; ?>
-
-        <a href="?action=logout" class="logout-btn">Se Déconnecter</a>
-    </div>
-</div>
-
-<div class="wrapper">
-    <div class="main-col">
-        <span class="badge"><?php echo $act_lbl; ?></span>
-        <h1>Scène <?php echo $current_id; ?> : <?php echo $scene['titre']; ?></h1>
+        /* DRAWER */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1100; display: none; }
+        .drawer { position: fixed; top: 0; right: -100%; width: 85%; max-width: 320px; height: 100%; background: var(--surface); z-index: 1200; transition: right 0.2s ease; display: flex; flex-direction: column; box-shadow: -5px 0 15px var(--shadow); border-left: 1px solid var(--border); }
+        .drawer.open { right: 0; }
+        .drawer-header { padding: 15px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); }
+        .drawer-content { flex: 1; padding: 15px; overflow-y: auto; }
         
-        <?php if (!$is_orga_view): ?>
-            <div class="role-display"><?php echo $role_txt; ?></div>
-            <div class="box" style="border-left-color: #f1c40f;">
-                <span class="box-title">TES INSTRUCTIONS</span>
-                <div style="font-size: 1.1em; line-height: 1.6;"><?php echo nl2br($cons_txt); ?></div>
-            </div>
-            <div class="box">
-                <span class="box-title">CONTEXTE GÉNÉRAL</span>
-                <em style="color:#ccc;"><?php echo nl2br($scene['intro']); ?></em>
-            </div>
-        <?php else: ?>
-            <div class="controls-bar">
-                <form method="POST" style="flex:1;">
-                    <select name="jump_scene" onchange="this.form.submit()" style="width:100%; padding:10px; border-radius:4px; background:#fff; color:#000;">
-                        <option value="">-- Saut Rapide vers... --</option>
-                        <?php foreach($scenarios as $id=>$s) echo "<option value='$id'>$id. {$s['titre']}</option>"; ?>
-                    </select>
-                </form>
-                <form method="POST"><input type="hidden" name="action" value="back"><button class="btn-mini" style="background:#555; color:#fff;" title="Retour Arrière">⬅ Précédent</button></form>
-                
-                <a href="?view=orga&export=1" target="_blank" class="btn-export" title="Générer PDF">📄 PDF</a>
+        .submenu { display: none; }
+        .submenu.active { display: block; }
 
-                <form method="POST"><input type="hidden" name="action" value="reset"><button class="btn-mini" style="background:#444; color:#e74c3c;" onclick="return confirm('Tout effacer ?');">⚠️ Reset</button></form>
-            </div>
+        /* UI ELEMENTS */
+        .gender-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .g-switch { display: flex; gap: 5px; }
+        .g-btn { border: 1px solid var(--border); background: transparent; color: var(--text-muted); padding: 4px 8px; border-radius: 4px; font-size: 0.8em; cursor: pointer; }
+        .g-btn.active-M { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .g-btn.active-F { background: #d946ef; color: white; border-color: #d946ef; }
+    </style>
+</head>
+<body class="<?php echo $current_theme; ?>">
 
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <div class="box" style="flex: 1; border-left-color:#e74c3c; background:#4a2323; min-width: 200px;">
-                    <span class="box-title">🎒 Accessoires & Matériel</span>
-                    <strong style="color:#ffcccc;"><?php echo !empty($scene['accessoires']) ? nl2br($scene['accessoires']) : '-'; ?></strong>
-                </div>
-                <div class="box" style="flex: 1; border-left-color:#2ecc71; background:#1e3525; min-width: 200px;">
-                    <span class="box-title">📍 Lieu / Décor</span>
-                    <strong style="color:#abebc6;"><?php echo !empty($scene['lieu']) ? nl2br($scene['lieu']) : '-'; ?></strong>
-                </div>
-            </div>
-
-            <?php if(!empty($scene['musique'])): ?>
-                <div class="box" style="border-left-color:#9b59b6;"><span class="box-title">🎵 Musique</span><strong style="color:#e0b0ff; font-size:1.2em;"><?php echo $scene['musique']; ?></strong></div>
-            <?php endif; ?>
-
-            <div class="box"><span class="box-title">👥 Personnages Présents</span><?php echo $scene['personnages'] ?? '-'; ?></div>
-            <div class="box"><span class="box-title">📖 Introduction</span><?php echo nl2br($scene['intro']); ?></div>
-            <?php if(!empty($scene['mise_en_scene'])): ?><div class="box"><span class="box-title">🎬 Mise en Scène</span><?php echo nl2br($scene['mise_en_scene']); ?></div><?php endif; ?>
-            <?php if(!empty($scene['infos'])): ?><div class="box" style="border-left-color:#e67e22; background:#3e332a;"><span class="box-title">ℹ️ Informations Orga</span><div style="color:#f39c12; font-weight:500; font-size:1.1em;"><?php echo nl2br($scene['infos']); ?></div></div><?php endif; ?>
-
-            <h3 style="margin-top:30px; border-bottom:1px solid #444; padding-bottom:5px;">Aperçu des Rôles</h3>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-bottom:20px;">
-                <?php foreach($config as $k=>$v): if($k=='orga') continue; 
-                    $p = $scene['joueurs'][$k] ?? []; $r = $p['role'] ?? '-';
-                    $style_box = (strpos($r, $v['name']) === false && $r !== '-') ? 'border:1px solid #e74c3c; background:rgba(231, 76, 60, 0.2);' : 'background:#333; border:1px solid #444;';
-                ?>
-                    <div style="padding:10px; font-size:0.9em; border-radius:4px; <?php echo $style_box; ?>">
-                        <strong style="color:<?php echo $v['bg']; ?>; text-transform:uppercase;"><?php echo $v['name']; ?></strong><br>
-                        <span style="color:#fff; font-weight:bold;"><?php echo $r; ?></span>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-
-            <div style="margin-top:30px; background:#222; padding:20px; border-radius:8px;">
-                <h3 style="margin-top:0;">⚡ Actions & Choix</h3>
-                <form method="POST">
-                    <input type="hidden" name="choice_text" value=""><input type="hidden" name="set_flags" value="">
-                    <?php foreach($scene['choix'] as $choix): 
-                        $condition_ok = true;
-                        if(isset($choix['condition'])) {
-                            if ($choix['condition'] === 'aucune_prison') {
-                                if (!empty($state['flags']['camille_prison']) || !empty($state['flags']['charlie_prison'])) $condition_ok = false;
-                            } elseif (empty($state['flags'][$choix['condition']])) { $condition_ok = false; }
-                        }
-                        $style_btn = "background: #c0392b;"; $text_add = "";
-                        if (!$condition_ok) { $style_btn = "background: transparent; border: 2px dashed #777; color: #aaa;"; $text_add = " <span style='font-size:0.8em;'>(Choix masqué aux joueurs)</span>"; }
-                    ?>
-                        <input type="hidden" id="f_<?php echo $choix['cible']; ?>" value='<?php echo json_encode($choix['set']); ?>'>
-                        <button type="submit" name="target_scene" value="<?php echo $choix['cible']; ?>" class="btn-choice" style="<?php echo $style_btn; ?>"
-                            onclick="this.form.set_flags.value=document.getElementById('f_<?php echo $choix['cible']; ?>').value; this.form.choice_text.value='<?php echo addslashes($choix['texte']); ?>'">
-                            ➜ <?php echo $choix['texte'] . $text_add; ?>
-                        </button>
-                    <?php endforeach; ?>
-                </form>
-            </div>
-        <?php endif; ?>
+<?php if (!$user_id): ?>
+    <div class="login-wrap">
+        <div style="font-size: 4em; margin-bottom: 20px; color:var(--primary);">
+            <i class="fa-solid fa-fingerprint"></i>
+        </div>
+        <h2 style="margin-bottom: 30px; letter-spacing: 2px; color:var(--text); text-transform: uppercase;">BRAQUAGE</h2>
+        <form method="POST">
+            <input type="text" name="username" class="login-input" placeholder="Utilisateur" required>
+            <input type="password" name="password" class="login-input" placeholder="Mot de passe" required>
+            <button type="submit" name="login" class="btn btn-action" style="justify-content: center;">CONNEXION</button>
+        </form>
     </div>
+<?php else: ?>
 
-    <?php if ($is_admin): ?>
-    <div class="side-col">
-        <h3 style="margin-top:0; border-bottom:1px solid #555; padding-bottom:10px; font-size:1em;">📜 Historique</h3>
-        <?php if(empty($state['history'])) echo "<em style='color:#666; font-size:0.8em;'>Début de partie</em>"; ?>
-        <?php foreach(array_reverse($state['history']) as $h): ?>
-            <div class="hist-item"><strong><?php echo $h['titre']; ?></strong><div class="hist-act">⬇️ <?php echo $h['action']; ?></div></div>
-        <?php endforeach; ?>
+    <header>
+        <div style="display:flex; align-items:center;">
+            <span class="scene-badge"><?php echo $state['scene']; ?></span>
+            <div class="header-title"><?php echo mb_strimwidth($current_scene['titre'] ?? 'FIN', 0, 18, "..."); ?></div>
+        </div>
+        <div style="display:flex; align-items:center; gap: 15px;">
+            <span style="font-size:0.8em; color:var(--text-muted);"><?php echo strtoupper($user_id); ?></span>
+            <?php if($is_admin): ?>
+                <button id="drawer-btn" style="background:none; border:none; color:var(--text); font-size:1.4em; cursor:pointer;"><i class="fa-solid fa-bars"></i></button>
+            <?php else: ?>
+                <a href="?logout=1" style="color:var(--primary); font-size:1.2em;"><i class="fa-solid fa-power-off"></i></a>
+            <?php endif; ?>
+        </div>
+    </header>
+
+    <?php if($is_admin): ?>
+    <div class="tabs">
+        <div class="tab active" data-target="tab-scene">SCÈNE</div>
+        <div class="tab" data-target="tab-players">JOUEURS</div>
     </div>
     <?php endif; ?>
-</div>
+
+    <div class="content">
+        <div id="tab-scene" class="tab-content active">
+            <div class="card">
+                <span class="card-label">Contexte</span>
+                <div style="display:flex; flex-direction:column; gap:8px; font-size:0.9em; color:var(--text-muted);">
+                    <div><i class="fa-solid fa-location-dot" style="color:var(--primary); width:20px; text-align:center;"></i> <?php echo $current_scene['lieu']; ?></div>
+                    <?php if (!empty($current_scene['musique'])): ?>
+                        <div><i class="fa-solid fa-music" style="color:var(--secondary); width:20px; text-align:center;"></i> <?php echo $current_scene['musique']; ?></div>
+                    <?php endif; ?>
+                    <?php if (!empty($current_scene['accessoires'])): ?>
+                        <div><i class="fa-solid fa-box-open" style="color:orange; width:20px; text-align:center;"></i> <?php echo $current_scene['accessoires']; ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--text-muted);">
+                <span class="card-label">Narration</span>
+                <div class="narrative-text" style="font-style:italic;">
+                    <?php echo nl2br(htmlspecialchars($current_scene['intro'])); ?>
+                </div>
+            </div>
+
+            <?php if(!$is_admin && isset($current_scene['joueurs'][$user_role])): ?>
+                <div class="card" style="border-left: 4px solid var(--primary);">
+                    <div class="role-title" style="color:var(--primary)">🎯 Votre Rôle</div>
+                    <div class="narrative-text">
+                        <?php 
+                            $consignes = $current_scene['joueurs'][$user_role]['consignes'];
+                            if (is_array($consignes)) {
+                                $g = $state['genres'][$user_role] ?? 'M';
+                                $txt = $consignes[$g] ?? $consignes['M'] ?? reset($consignes);
+                            } else { $txt = $consignes; }
+                            echo nl2br(htmlspecialchars($txt)); 
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if($is_admin): ?>
+                <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+                    <span class="card-label" style="margin-bottom:15px; color:var(--primary);">👉 PILOTAGE</span>
+                    
+                    <?php if(!empty($state['history'])): ?>
+                        <form method="POST">
+                            <button type="submit" name="undo_last" class="btn btn-undo" onclick="return confirm('⚠️ Revenir à la scène précédente ?');">
+                                <i class="fa-solid fa-rotate-left"></i> &nbsp; Annuler dernier choix
+                            </button>
+                        </form>
+                    <?php endif; ?>
+
+                    <?php if (!empty($current_scene['choix'])): ?>
+                        <form method="POST">
+                            <input type="hidden" name="set_flags" id="set_flags">
+                            <input type="hidden" name="choice_text" id="choice_text">
+                            <?php foreach($current_scene['choix'] as $c): 
+                                $visible = empty($c['condition']) || ($state['flags'][$c['condition']] ?? false);
+                            ?>
+                                <button type="submit" name="target_scene" value="<?php echo $c['cible']; ?>" 
+                                        class="btn btn-action" style="<?php echo $visible ? '' : 'opacity:0.5; background:var(--surface); color:var(--text-muted);'; ?>"
+                                        onclick="document.getElementById('set_flags').value='<?php echo json_encode($c['set']); ?>'; document.getElementById('choice_text').value='<?php echo addslashes($c['texte']); ?>'">
+                                    <span><?php echo $c['texte']; ?> <?php echo $visible ? '' : '(Bloqué)'; ?></span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            <?php endforeach; ?>
+                        </form>
+                    <?php else: ?>
+                        <div class="card">🚫 Fin du scénario ou pas de choix configuré.</div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php if($is_admin): ?>
+        <div id="tab-players" class="tab-content">
+            <?php foreach($current_scene['joueurs'] as $id => $j): ?>
+                <div class="card">
+                    <span class="card-label" style="color:var(--secondary); font-size:0.9em;"><?php echo strtoupper($id); ?></span>
+                    <strong style="display:block; margin-bottom:5px; color:var(--text);"><?php echo $j['role']; ?></strong>
+                    <div class="narrative-text" style="font-size:0.85em; color:var(--text-muted);">
+                        <?php 
+                            $consignes = $j['consignes'];
+                            if (is_array($consignes)) {
+                                $g = $state['genres'][$id] ?? 'M';
+                                $txt = $consignes[$g] ?? $consignes['M'] ?? reset($consignes);
+                            } else { $txt = $consignes; }
+                            echo nl2br(htmlspecialchars($txt)); 
+                        ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+
+    <?php if($is_admin): ?>
+    <div class="overlay" id="overlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-header">
+            <h2 style="margin:0; font-size:1.1em; color:var(--text);">MENU</h2>
+            <button id="close-drawer" style="background:none; border:none; color:var(--text); font-size:1.2em; cursor:pointer;">✕</button>
+        </div>
+        
+        <div class="drawer-content">
+            <div id="menu-main" class="submenu active">
+                <div style="margin-bottom:20px;">
+                    <span class="card-label">Configuration</span>
+                    <?php foreach(['alex','andrea','camille','charlie'] as $p): $cg = $state['genres'][$p] ?? 'M'; ?>
+                        <div class="gender-row">
+                            <span><?php echo ucfirst($p); ?></span>
+                            <form method="POST" class="g-switch">
+                                <input type="hidden" name="p_id" value="<?php echo $p; ?>">
+                                <button name="set_genre" value="M" class="g-btn <?php echo $cg=='M'?'active-M':''; ?>">H</button>
+                                <button name="set_genre" value="F" class="g-btn <?php echo $cg=='F'?'active-F':''; ?>">F</button>
+                            </form>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <span class="card-label">🎨 Thème d'affichage</span>
+                    <form method="GET">
+                        <select name="set_theme" onchange="this.form.submit()" class="theme-select">
+                            <option value="theme-dark" <?php if($current_theme == 'theme-dark') echo 'selected'; ?>>Sombre 🌑</option>
+                            <option value="theme-light" <?php if($current_theme == 'theme-light') echo 'selected'; ?>>Clair ☀️</option>
+                            <option value="theme-gold" <?php if($current_theme == 'theme-gold') echo 'selected'; ?>>Or & Noir 🏆</option>
+                            <option value="theme-neon" <?php if($current_theme == 'theme-neon') echo 'selected'; ?>>Néon 🟣</option>
+                        </select>
+                    </form>
+                </div>
+
+                <button class="btn btn-menu" data-submenu="menu-jump">
+                    <span><i class="fa-solid fa-plane-departure"></i> Saut de Scène</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button class="btn btn-menu" data-submenu="menu-history">
+                    <span><i class="fa-solid fa-clock-rotate-left"></i> Historique</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button class="btn btn-menu" data-submenu="menu-pass">
+                    <span><i class="fa-solid fa-key"></i> Mots de passe</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                
+                <div style="margin-top:40px; border-top:1px solid var(--border); padding-top:20px;">
+                    <form method="POST">
+                        <button name="reset_game" class="btn" style="background:transparent; border:1px solid var(--primary); color:var(--primary); justify-content:center;" onclick="return confirm('⚠️ Tout effacer et recommencer ?')">
+                            <i class="fa-solid fa-rotate-right"></i> &nbsp; RESET GLOBAL
+                        </button>
+                    </form>
+                    <a href="?logout=1" class="btn btn-secondary" style="justify-content:center; text-decoration:none;">DÉCONNEXION</a>
+                </div>
+            </div>
+
+            <div id="menu-jump" class="submenu">
+                <button class="btn btn-secondary back-main" style="margin-bottom:20px; justify-content:flex-start;">
+                    <i class="fa-solid fa-arrow-left"></i> &nbsp; Retour
+                </button>
+                <h3 style="color:var(--text-muted); text-transform:uppercase;">Navigation Forcée</h3>
+                <p style="font-size:0.8em; color:var(--text-muted);">Attention, sauter une scène peut avoir des effets sur l'histoire.</p>
+                
+                <form method="POST">
+                    <select name="scene_id" class="theme-select" style="margin-bottom:15px;">
+                        <?php foreach($scenarios as $id => $sc): ?>
+                            <option value="<?php echo $id; ?>" <?php if($state['scene'] == $id) echo 'selected'; ?>>
+                                <?php echo $id . '. ' . $sc['titre']; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button name="force_scene" class="btn btn-action" style="justify-content:center;" onclick="return confirm('Sauter vers cette scène ?')">Y ALLER</button>
+                </form>
+            </div>
+
+            <div id="menu-history" class="submenu">
+                <button class="btn btn-secondary back-main" style="margin-bottom:20px; justify-content:flex-start;">
+                    <i class="fa-solid fa-arrow-left"></i> &nbsp; Retour
+                </button>
+                
+                <a href="?mode=export_view" target="_blank" class="btn btn-action" style="margin-bottom:20px; text-decoration:none; display:flex; justify-content:center;">
+                    <i class="fa-solid fa-print"></i> &nbsp; VOIR RAPPORT COMPLET
+                </a>
+
+                <div style="font-size:0.8em; color:var(--text-muted); text-align:center;">
+                    (Les 5 derniers mouvements)
+                </div>
+                <div style="margin-top:10px; padding-left:10px;">
+                    <?php 
+                    $history_rev = array_reverse($state['history']);
+                    $preview = array_slice($history_rev, 0, 5);
+                    foreach($preview as $h): ?>
+                        <div style="margin-bottom:10px; border-bottom:1px solid var(--border); padding-bottom:5px;">
+                            <strong style="color:var(--primary)"><?php echo $h['time']; ?></strong> Sc. <?php echo $h['to']; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div id="menu-pass" class="submenu">
+                <button class="btn btn-secondary back-main" style="margin-bottom:20px; justify-content:flex-start;">
+                    <i class="fa-solid fa-arrow-left"></i> &nbsp; Retour
+                </button>
+                <?php if(isset($msg_success)) echo "<div style='color:var(--secondary); margin-bottom:10px;'>$msg_success</div>"; ?>
+                <form method="POST">
+                    <label class="card-label">Joueur</label>
+                    <select name="u_target" style="width:100%; padding:10px; border-radius:8px; background:var(--bg); color:var(--text); border:1px solid var(--border); margin-bottom:15px;">
+                        <?php foreach($users_db as $u => $d) echo "<option value='$u'>$u</option>"; ?>
+                    </select>
+                    <label class="card-label">Nouveau mot de passe</label>
+                    <input type="text" name="new_pw" style="width:100%; padding:10px; border-radius:8px; background:var(--bg); color:var(--text); border:1px solid var(--border); box-sizing:border-box; margin-bottom:20px;">
+                    <button name="change_pw" class="btn btn-action" style="justify-content:center;">ENREGISTRER</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+<?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // GESTION MENU
+    const drawerBtn = document.getElementById('drawer-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer');
+    const overlay = document.getElementById('overlay');
+    const drawer = document.getElementById('drawer');
+
+    function toggleMenu() {
+        if(drawer.classList.contains('open')) {
+            drawer.classList.remove('open');
+            setTimeout(() => { if(overlay) overlay.style.display = 'none'; showSubMenu('menu-main'); }, 200);
+        } else {
+            if(overlay) overlay.style.display = 'block';
+            setTimeout(() => drawer.classList.add('open'), 10);
+        }
+    }
+
+    if(drawerBtn) drawerBtn.addEventListener('click', toggleMenu);
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', toggleMenu);
+    if(overlay) overlay.addEventListener('click', toggleMenu);
+
+    // GESTION TABS
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const targetId = this.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // GESTION SOUS-MENUS
+    function showSubMenu(id) {
+        document.querySelectorAll('.submenu').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(id);
+        if(target) target.classList.add('active');
+    }
+
+    document.querySelectorAll('.btn-menu').forEach(btn => {
+        btn.addEventListener('click', function() {
+            showSubMenu(this.getAttribute('data-submenu'));
+        });
+    });
+
+    document.querySelectorAll('.back-main').forEach(btn => {
+        btn.addEventListener('click', function() {
+            showSubMenu('menu-main');
+        });
+    });
+});
+</script>
 
 </body>
 </html>
