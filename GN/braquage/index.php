@@ -8,19 +8,21 @@ $state_file = 'gamestate.json';
 $scenario_file = 'scenario.json';
 $users_file = 'users.json'; 
 
-// Création fichiers par défaut
+// Création fichiers par défaut (si inexistants)
 if (!file_exists($users_file)) {
     $default = ['nath'=>['pass'=>'chef','role'=>'orga'], 'alex'=>['pass'=>'joueur','role'=>'alex']];
-    file_put_contents($users_file, json_encode($default));
+    file_put_contents($users_file, json_encode($default), LOCK_EX);
 }
 if (!file_exists($state_file)) {
-    file_put_contents($state_file, json_encode(["scene" => "1", "history" => [], "flags" => [], "genres" => ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"]]));
+    file_put_contents($state_file, json_encode(["scene" => "1", "history" => [], "flags" => [], "genres" => ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"]]), LOCK_EX);
 }
 
+// Chargement des données
 $users_db = json_decode(file_get_contents($users_file), true);
 $state = json_decode(file_get_contents($state_file), true);
 $scenarios = json_decode(file_get_contents($scenario_file), true);
 
+// Sécurité genre
 if (!isset($state['genres'])) {
     $state['genres'] = ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"];
 }
@@ -36,7 +38,7 @@ if (isset($_GET['set_theme'])) {
 $current_theme = $_COOKIE['app_theme'] ?? 'theme-dark';
 
 // ============================================================================
-// 3. EXPORT PDF (PAGE IMPRIMABLE)
+// 3. EXPORT PDF
 // ============================================================================
 if (isset($_GET['mode']) && $_GET['mode'] === 'export_view' && isset($_SESSION['role']) && $_SESSION['role'] === 'orga') {
     ?>
@@ -109,13 +111,13 @@ $is_admin = ($user_role === 'orga');
 
 if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // NAVIGATION
+    // NAVIGATION STANDARD
     if (isset($_POST['target_scene'])) {
         $state['history'][] = ['from' => $state['scene'], 'to' => $_POST['target_scene'], 'text' => $_POST['choice_text'], 'time' => date('H:i')];
         $state['scene'] = $_POST['target_scene'];
         $new_flags = json_decode($_POST['set_flags'], true);
         if($new_flags) foreach ($new_flags as $f => $v) { $state['flags'][$f] = $v; }
-        file_put_contents($state_file, json_encode($state));
+        file_put_contents($state_file, json_encode($state), LOCK_EX);
     }
 
     // SAUT DE SCENE FORCÉ
@@ -123,7 +125,7 @@ if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $target = $_POST['scene_id'];
         $state['history'][] = ['from' => $state['scene'], 'to' => $target, 'text' => '⚠️ SAUT MANUEL (MJ)', 'time' => date('H:i')];
         $state['scene'] = $target;
-        file_put_contents($state_file, json_encode($state));
+        file_put_contents($state_file, json_encode($state), LOCK_EX);
     }
 
     // ANNULATION (UNDO)
@@ -131,21 +133,21 @@ if ($is_admin && $_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($state['history'])) {
             $last_move = array_pop($state['history']); 
             $state['scene'] = $last_move['from'];
-            file_put_contents($state_file, json_encode($state));
+            file_put_contents($state_file, json_encode($state), LOCK_EX);
         }
     }
 
     if (isset($_POST['reset_game'])) {
         $state = ["scene" => "1", "history" => [], "flags" => [], "genres" => ["alex"=>"M", "andrea"=>"M", "camille"=>"F", "charlie"=>"F"]];
-        file_put_contents($state_file, json_encode($state));
+        file_put_contents($state_file, json_encode($state), LOCK_EX);
     }
     if (isset($_POST['set_genre'])) {
         $state['genres'][$_POST['p_id']] = $_POST['set_genre'];
-        file_put_contents($state_file, json_encode($state));
+        file_put_contents($state_file, json_encode($state), LOCK_EX);
     }
     if (isset($_POST['change_pw'])) {
         $users_db[$_POST['u_target']]['pass'] = $_POST['new_pw'];
-        file_put_contents($users_file, json_encode($users_db, JSON_PRETTY_PRINT));
+        file_put_contents($users_file, json_encode($users_db, JSON_PRETTY_PRINT), LOCK_EX);
         $msg_success = "Mot de passe modifié !";
     }
 }
